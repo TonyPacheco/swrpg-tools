@@ -1,0 +1,20 @@
+﻿<div class="row">
+    <div class="col-1">
+        <input type="checkbox" @bind="Skill.IsCareerSkill" />
+    </div>
+    <div class="col-5">
+        @Skill.Name (@Skill.Base.Abbreviation)
+    </div>
+    <div class="col-2">
+        <input type="number" class="form-control" @bind="Skill.Ranks" />
+    </div>
+    <div class="col">
+        @Skill.DicePool
+    </div>
+</div>
+
+
+@code {
+    [Parameter, EditorRequired]
+    public Skill Skill { get; set; }
+}

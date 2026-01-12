@@ -1,0 +1,262 @@
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+@using System.Text.Json
+@using System.Threading.Tasks
+
+<PageTitle>Character Sheet</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <select @onchange="e => LoadCharacter(e.Value?.ToString())" class="form-control">
+                <option value="">-- Select Character --</option>
+                @foreach(var character in AvailableCharacters)
+                {
+                    <option value="@character.CharacterName">@character.CharacterName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-secondary" @onclick="NewCharacter">New Character</button>
+            <button class="btn btn-primary" @onclick="SaveCharacter">Save Character</button>
+        </div>
+    </div>
+    <br />
+    <div class="subheader">Persona</div>
+    <div class="row">
+        <div class="col-md-6">
+            Character Name: <input @bind-value="@Model.CharacterName" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            Player Name: <input @bind-value="@Model.PlayerName" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            Career: <input @bind-value="@Model.Career" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            Species: <input @bind-value="@Model.Species" class="form-control" />
+        </div>
+        <div class="col-md-12">
+            Specialization(s): <input @bind-value="@Model.Specialization" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="subheader">Characteristics</div>
+    <div class="row">
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Brawn.Value" />
+            </div>
+            <div>
+                Brawn
+            </div>
+        </div>
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Agility.Value" />
+            </div>
+            <div>
+                Agility
+            </div>
+        </div>
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Intellect.Value" />
+            </div>
+            <div>
+                Intellect
+            </div>
+        </div>
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Cunning.Value" />
+            </div>
+            <div>
+                Cunning
+            </div>
+        </div>
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Willpower.Value" />
+            </div>
+            <div>
+                Willpower
+            </div>
+        </div>
+        <div class="col-md-2 characteristic">
+            <div>
+                <input type="number" class="form-control" @bind-value="@Model.Presence.Value" />
+            </div>
+            <div>
+                Presence
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="subheader">Attributes</div>
+    <div class="row">
+        <div class="col-md-4 card">
+            <div class="row">
+                <div class="col-md-6">
+                    Max Wounds <input type="number" class="form-control" @bind-value="@Model.WoundThreshold" />
+                    <br />
+                    Wounds <input type="number" class="form-control" @bind-value="@Model.Current.Wounds" />
+                </div>
+                <div class="col-md-6">
+                    Max Strain <input type="number" class="form-control" @bind-value="@Model.StrainThreshold" />
+                    <br />
+                    Strain <input type="number" class="form-control" @bind-value="@Model.Current.Strain" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 card">
+            <div class="row">
+                <div class="col-md-12">
+                    Soak <input type="number" class="form-control" @bind-value="@Model.Soak" />
+                </div>
+                <div class="col-md-12">
+                    Defense
+                    <div class="row">
+                        <div class="col-md-6">
+                            Ranged <input type="number" class="form-control" @bind-value="@Model.DefenseRanged" />
+                        </div>
+                        <div class="col-md-6">
+                            Melee <input type="number" class="form-control" @bind-value="@Model.DefenseMelee" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 card">
+            <div class="row">
+                <div class="col-md-10">
+                    Critical Injuries
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline" onclick="@AddInjury">+</button>
+                </div>
+                <div class="col-md-12">
+                    @for(var i = Model.Current.CriticalInjuries.Count - 1; i >= 0; i--)
+                    {
+                        var injury = Model.Current.CriticalInjuries[i];
+                        <div class="row mb-2">
+                            <div class="col-md-7">
+                                Injury
+                                <input type="text" class="form-control" @bind-value="injury.Name" />
+                            </div>
+                            <div class="col-md-4">
+                                Severity <input type="number" class="form-control" @bind-value="injury.Severity" />
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-outline-danger" @onclick="() => RemoveInjury(injury)">-</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="subheader">Skills</div>
+
+    <div class="row">
+        @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat).OrderBy(s => s.Name))
+        {
+            <div class="col-md-6">
+                <CharacterSheet.Components.SkillRow Skill="skill" />
+            </div>
+        }
+        <hr />
+        @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.General).OrderBy(s => s.Name))
+        {
+            <div class="col-md-6">
+                <CharacterSheet.Components.SkillRow Skill="skill" />
+            </div>
+        }
+        <hr />
+        @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Knowledge).OrderBy(s => s.Name))
+        {
+            <div class="col-md-6">
+                <CharacterSheet.Components.SkillRow Skill="skill" />
+            </div>
+        }
+    </div>
+</div>
+
+@code{
+    [Inject] public required StorageService Storage { get; set; }
+    public CharacterModel Model { get; set; } = new(true);
+    public List<CharacterModel> AvailableCharacters { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var json = await Storage.GetFromLocalStorage("Characters");
+        if(string.IsNullOrWhiteSpace(json))
+        {
+            Console.WriteLine("No saved characters found.");
+            return;
+        }
+        AvailableCharacters = JsonSerializer.Deserialize<List<CharacterModel>>(json) ?? [];
+    }
+
+    public void AddInjury()
+    {
+        Model.Current.CriticalInjuries.Add(new CriticalInjury
+        {
+            Name = "New Injury",
+            Severity = 1
+        });
+    }
+
+    public void RemoveInjury(CriticalInjury injury)
+    {
+        Model.Current.CriticalInjuries.Remove(injury);
+    }
+
+    public async Task NewCharacter()
+    {
+        Console.WriteLine("Saving current character");
+        await SaveCharacter();
+
+        Console.WriteLine("Initializing new character");
+        Model = new CharacterModel(true);
+        StateHasChanged();
+    }
+
+    public async Task LoadCharacter(string? characterName)
+    {
+        if(string.IsNullOrEmpty(characterName))
+        {
+            return;
+        }
+        var character = AvailableCharacters.FirstOrDefault(c => c.CharacterName == characterName);
+        if(character is null)
+        {
+            Console.Error.WriteLine("ERROR: Character not found.");
+            return;
+        }
+        Model = character;
+        StateHasChanged();
+    }
+
+    public async Task SaveCharacter()
+    {
+        if(string.IsNullOrWhiteSpace(Model.CharacterName))
+        {
+            Console.Error.WriteLine("ERROR: Character must have a name to be saved.");
+            return;
+        }
+        var existing = AvailableCharacters.FirstOrDefault(c => c.CharacterName == Model.CharacterName);
+        if(existing != null)
+        {
+            Console.WriteLine("Updating existing character.");
+            existing = Model;
+        }
+        else
+        {
+            Console.WriteLine("Saving new character.");
+            AvailableCharacters.Add(Model);
+        }
+        await Storage.SetToLocalStorage("Characters", JsonSerializer.Serialize(AvailableCharacters));
+    }
+}
