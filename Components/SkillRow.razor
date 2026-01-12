@@ -1,20 +1,43 @@
-﻿<div class="row">
-    <div class="col-1">
-        <input type="checkbox" @bind="Skill.IsCareerSkill" />
+﻿@if (Readonly)
+{
+    <div class="row">
+        <div class="col-1">
+            <input type="checkbox" @bind="Skill.IsCareerSkill" readonly disabled/>
+        </div>
+        <div class="col-5">
+            @Skill.Name
+        </div>
+        <div class="col-2">
+            @Skill.Ranks
+        </div>
+        <div class="col">
+            @Skill.DicePool
+        </div>
     </div>
-    <div class="col-5">
-        @Skill.Name (@Skill.Base.Abbreviation)
+}
+else
+{
+    <div class="row">
+        <div class="col-1">
+            <input type="checkbox" @bind="Skill.IsCareerSkill" />
+        </div>
+        <div class="col-5">
+            @Skill.Name (@Skill.Base.Abbreviation)
+        </div>
+        <div class="col-2">
+            <input type="number" class="form-control" @bind="Skill.Ranks" />
+        </div>
+        <div class="col">
+            @Skill.DicePool
+        </div>
     </div>
-    <div class="col-2">
-        <input type="number" class="form-control" @bind="Skill.Ranks" />
-    </div>
-    <div class="col">
-        @Skill.DicePool
-    </div>
-</div>
+}
 
-
-@code {
+@code 
+{
     [Parameter, EditorRequired]
     public Skill Skill { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool Readonly { get; set; }
 }

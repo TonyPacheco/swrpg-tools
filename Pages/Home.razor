@@ -7,8 +7,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
-            <select @onchange="e => LoadCharacter(e.Value?.ToString())" class="form-control">
+        <div class="col-md-4">
+            <select value="@Model.CharacterName" @onchange="e => LoadCharacter(e.Value?.ToString())" class="form-control">
                 <option value="">-- Select Character --</option>
                 @foreach(var character in AvailableCharacters)
                 {
@@ -20,99 +20,181 @@
             <button class="btn btn-secondary" @onclick="NewCharacter">New Character</button>
             <button class="btn btn-primary" @onclick="SaveCharacter">Save Character</button>
         </div>
+        <div class="col-md-4">
+            <button class="btn btn-outline-primary" style="float: right" @onclick="ToggleReadonly">@(Readonly ? "Edit" : "Readonly")</button>
+        </div>
     </div>
     <br />
     <div class="subheader">Persona</div>
     <div class="row">
-        <div class="col-md-6">
-            Character Name: <input @bind-value="@Model.CharacterName" class="form-control" />
-        </div>
-        <div class="col-md-6">
-            Player Name: <input @bind-value="@Model.PlayerName" class="form-control" />
-        </div>
-        <div class="col-md-6">
-            Career: <input @bind-value="@Model.Career" class="form-control" />
-        </div>
-        <div class="col-md-6">
-            Species: <input @bind-value="@Model.Species" class="form-control" />
-        </div>
-        <div class="col-md-12">
-            Specialization(s): <input @bind-value="@Model.Specialization" class="form-control" />
-        </div>
+        @if (Readonly)
+        {
+            <div class="col-md-6">
+                Character Name: <input value="@Model.CharacterName" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-6">
+                Player Name: <input value="@Model.PlayerName" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-6">
+                Career: <input value="@Model.Career" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-6">
+                Species: <input value="@Model.Species" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-12">
+                Specialization(s): <input value="@Model.Specialization" class="form-control" disabled readonly />
+            </div>
+        }
+        else
+        {
+            <div class="col-md-6">
+                Character Name: <input @bind-value="@Model.CharacterName" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                Player Name: <input @bind-value="@Model.PlayerName" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                Career: <input @bind-value="@Model.Career" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                Species: <input @bind-value="@Model.Species" class="form-control" />
+            </div>
+            <div class="col-md-12">
+                Specialization(s): <input @bind-value="@Model.Specialization" class="form-control" />
+            </div>
+        }
+        
     </div>
     <br />
     <div class="subheader">Characteristics</div>
-    <div class="row">
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Brawn.Value" />
+    @if (Readonly)
+    {
+        <div class="row">
+            <ReadonlyCharacteristic Characteristic="@Model.Brawn" />
+            <ReadonlyCharacteristic Characteristic="@Model.Agility"/>
+            <ReadonlyCharacteristic Characteristic="@Model.Intellect" />
+            <ReadonlyCharacteristic Characteristic="@Model.Cunning"/>
+            <ReadonlyCharacteristic Characteristic="@Model.Willpower"/>
+            <ReadonlyCharacteristic Characteristic="@Model.Presence" />
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Brawn.Value" />
+                </div>
+                <div>
+                    Brawn
+                </div>
             </div>
-            <div>
-                Brawn
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Agility.Value" />
+                </div>
+                <div>
+                    Agility
+                </div>
+            </div>
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Intellect.Value" />
+                </div>
+                <div>
+                    Intellect
+                </div>
+            </div>
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Cunning.Value" />
+                </div>
+                <div>
+                    Cunning
+                </div>
+            </div>
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Willpower.Value" />
+                </div>
+                <div>
+                    Willpower
+                </div>
+            </div>
+            <div class="col-md-2 characteristic">
+                <div>
+                    <input type="number" class="form-control" @bind-value="@Model.Presence.Value" />
+                </div>
+                <div>
+                    Presence
+                </div>
             </div>
         </div>
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Agility.Value" />
-            </div>
-            <div>
-                Agility
-            </div>
-        </div>
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Intellect.Value" />
-            </div>
-            <div>
-                Intellect
-            </div>
-        </div>
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Cunning.Value" />
-            </div>
-            <div>
-                Cunning
-            </div>
-        </div>
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Willpower.Value" />
-            </div>
-            <div>
-                Willpower
-            </div>
-        </div>
-        <div class="col-md-2 characteristic">
-            <div>
-                <input type="number" class="form-control" @bind-value="@Model.Presence.Value" />
-            </div>
-            <div>
-                Presence
-            </div>
-        </div>
-    </div>
+    }
     <br />
     <div class="subheader">Attributes</div>
     <div class="row">
         <div class="col-md-4 card">
             <div class="row">
                 <div class="col-md-6">
-                    Max Wounds <input type="number" class="form-control" @bind-value="@Model.WoundThreshold" />
-                    <br />
-                    Wounds <input type="number" class="form-control" @bind-value="@Model.Current.Wounds" />
+                    @if (Readonly)
+                    {
+                        <text>Wounds</text>
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="number" class="form-control" @bind-value="@Model.Current.Wounds" />
+                            </div>
+                            <div class="col-4">
+                                /@Model.WoundThreshold
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <text>Max Wounds</text>
+                        <input type="number" class="form-control" @bind-value="@Model.WoundThreshold" />
+                        <br />
+                        <text>Wounds</text><input type="number" class="form-control" @bind-value="@Model.Current.Wounds" />
+                    }
                 </div>
                 <div class="col-md-6">
-                    Max Strain <input type="number" class="form-control" @bind-value="@Model.StrainThreshold" />
-                    <br />
-                    Strain <input type="number" class="form-control" @bind-value="@Model.Current.Strain" />
+                    @if (Readonly)
+                    {
+                        <text>Strain</text>
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="number" class="form-control" @bind-value="@Model.Current.Strain" />
+                            </div>
+                            <div class="col-4">
+                                /@Model.StrainThreshold
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <text>Max Strain</text>
+                        <input type="number" class="form-control" @bind-value="@Model.StrainThreshold" />
+                        <br />
+                        <text>Strain</text><input type="number" class="form-control" @bind-value="@Model.Current.Strain" />
+                    }
                 </div>
             </div>
         </div>
         <div class="col-md-2 card">
-            <div class="row">
-                <div class="col-md-12">
-                    Soak <input type="number" class="form-control" @bind-value="@Model.Soak" />
+            @if (Readonly)
+            {
+                <div class="">
+                    Soak @Model.Soak
+                    <br />
+                    Ranged Def. @Model.DefenseRanged
+                    <br />
+                    Melee Def. @Model.DefenseMelee
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <text>Soak</text><input type="number" class="form-control" @bind-value="@Model.Soak" />
                 </div>
                 <div class="col-md-12">
                     Defense
@@ -125,8 +207,8 @@
                         </div>
                     </div>
                 </div>
+            }
             </div>
-        </div>
         <div class="col-md-6 card">
             <div class="row">
                 <div class="col-md-10">
@@ -163,21 +245,21 @@
         @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat).OrderBy(s => s.Name))
         {
             <div class="col-md-6">
-                <CharacterSheet.Components.SkillRow Skill="skill" />
+                <SkillRow Readonly="Readonly" Skill="skill" />
             </div>
         }
         <hr />
         @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.General).OrderBy(s => s.Name))
         {
             <div class="col-md-6">
-                <CharacterSheet.Components.SkillRow Skill="skill" />
+                <SkillRow Readonly="Readonly" Skill="skill" />
             </div>
         }
         <hr />
         @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Knowledge).OrderBy(s => s.Name))
         {
             <div class="col-md-6">
-                <CharacterSheet.Components.SkillRow Skill="skill" />
+                <SkillRow Readonly="Readonly" Skill="skill" />
             </div>
         }
     </div>
@@ -187,6 +269,8 @@
     [Inject] public required StorageService Storage { get; set; }
     public CharacterModel Model { get; set; } = new(true);
     public List<CharacterModel> AvailableCharacters { get; set; } = [];
+    public bool Readonly = true;
+    public void ToggleReadonly() => Readonly = !Readonly;
 
     protected override async Task OnInitializedAsync()
     {
@@ -197,6 +281,10 @@
             return;
         }
         AvailableCharacters = JsonSerializer.Deserialize<List<CharacterModel>>(json) ?? [];
+        if (AvailableCharacters.Any())
+        {
+            Model = AvailableCharacters[0];
+        }
     }
 
     public void AddInjury()

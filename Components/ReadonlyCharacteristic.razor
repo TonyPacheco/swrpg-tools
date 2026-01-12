@@ -1,0 +1,24 @@
+﻿<div class="col-2 characteristic">
+    <div style="font-size: 2em">
+        @Render()
+    </div>
+    <div>
+        @Characteristic.Name
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Characteristic Characteristic { get; set; }
+
+    private string Render() => Characteristic.Value switch
+    {
+        1 => "①",
+        2 => "②",
+        3 => "③",
+        4 => "④",
+        5 => "⑤",
+        6 => "⑥",
+        _ => "x"
+    };
+}
