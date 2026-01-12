@@ -1,0 +1,74 @@
+﻿@page "/manageCharacters"
+@using System.Text.Json
+@using System.Text
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h3>Manage Characters</h3>
+            Import Characters
+            <br />
+            <InputFile accept="json" OnChange="Import" />
+            <br />
+            <br />
+            <button class="btn btn-primary" onclick="@Export">Export Characters</button>
+            <br />
+            <br />
+            <button class="btn btn-danger" onclick="@Clear">Delete All Characters</button>
+        </div>
+        <div class="col-4">
+            <br />
+            <button onclick="@Nav.ToCharacterSheet" class="btn btn-outline-primary">Back</button>
+        </div>
+    </div>
+</div>
+
+@code 
+{
+    [Inject] public required StorageService Storage { get; set; }
+    [Inject] public required IJSRuntime Js { get; set; }
+
+
+    public async Task Import(InputFileChangeEventArgs e)
+    {
+        using var stream = e.File.OpenReadStream();
+        var json = await new StreamReader(stream).ReadToEndAsync();
+        var importedCharacters = JsonSerializer.Deserialize<List<CharacterModel>>(json);
+        if(importedCharacters is null || importedCharacters.Count == 0)
+        {
+            return;
+        }
+        var existingCharacters = await Storage.GetFromLocalStorage("Characters");
+        if(existingCharacters is null or "[]")
+        {
+            await Storage.SetToLocalStorage("Characters", json);
+            return;
+        }
+        var existingCharacterList = JsonSerializer.Deserialize<List<CharacterModel>>(existingCharacters);
+        if(existingCharacterList is null)
+        {
+            await Storage.SetToLocalStorage("Characters", json);
+            return;
+        }
+        existingCharacterList.AddRange(importedCharacters);
+        var mergedJson = JsonSerializer.Serialize(existingCharacterList);
+        await Storage.SetToLocalStorage("Characters", mergedJson);
+    }
+
+    public async Task Export()
+    {
+        var existingCharacters = await Storage.GetFromLocalStorage("Characters");
+        if(existingCharacters is null)
+        {
+            return;
+        }
+        var fileStream = new MemoryStream(new UTF8Encoding(true).GetBytes(existingCharacters));
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", "swrpgcharacters.json", streamRef);
+    }
+
+    public async Task Clear()
+    {
+        await Storage.RemoveFromLocalStorage("Characters");
+    }
+}

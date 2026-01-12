@@ -17,8 +17,17 @@
             </select>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-secondary" @onclick="NewCharacter">New Character</button>
-            <button class="btn btn-primary" @onclick="SaveCharacter">Save Character</button>
+            <div class="row">
+                <div class="col-4">
+                    <button class="btn btn-primary" @onclick="NewCharacter">New</button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-success" @onclick="SaveCharacter">Save</button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-outline-primary" @onclick="Nav.ToManageCharacters">Manage</button>
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
             <button class="btn btn-outline-primary" style="float: right" @onclick="ToggleReadonly">@(Readonly ? "Edit" : "Readonly")</button>
@@ -266,6 +275,7 @@
 </div>
 
 @code{
+    private const string ManagePageUrl = "/manageCharacters";
     [Inject] public required StorageService Storage { get; set; }
     public CharacterModel Model { get; set; } = new(true);
     public List<CharacterModel> AvailableCharacters { get; set; } = [];
