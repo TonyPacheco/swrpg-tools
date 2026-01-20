@@ -139,49 +139,5 @@
             Combat,
             Knowledge
         }
-
-        public string DicePool
-        {   
-            get 
-            {
-                if(Ranks < 0)
-                {
-                    return string.Empty;
-                }
-                int yellows;
-                int greens;
-                if(Ranks <= Base.Value)
-                {
-                    yellows = Ranks;
-                    greens = Base.Value - Ranks;
-                }
-                else
-                {
-                    yellows = Base.Value;
-                    greens = Ranks - Base.Value;
-                }
-
-                var dicePool = "";
-                for(var i = 0; i < yellows; ++i)
-                {
-                    dicePool += "🟡";
-                }
-                for(var i = 0; i < greens; ++i)
-                {
-                    dicePool += "🟢";
-                }
-
-                for(var i = 0; i < BonusDice; ++i)
-                {
-                    dicePool += "🟦";
-                }
-                for(var i = 0; i < SetbackCancels; ++i)
-                {
-                    dicePool += "▪️";
-                }
-
-                return dicePool;
-            }
-        }
     }
 }

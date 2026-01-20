@@ -1,0 +1,29 @@
+﻿<i class="ffi @GetDieClass()"></i>
+
+@code 
+{
+    [Parameter, EditorRequired] public DieType Type { get; set; }
+
+    public string GetDieClass() => Type switch
+    {
+        DieType.Ability => "ffi-d8 ffi-swrpg-ability",
+        DieType.Proficiency => "ffi-d12 ffi-swrpg-proficiency",
+        DieType.Boost => "ffi-d6 ffi-swrpg-boost",
+        DieType.Difficulty => "ffi-d8 ffi-swrpg-difficulty",
+        DieType.Challenge => "ffi-d12 ffi-swrpg-challenge",
+        DieType.Setback => "ffi-d6 ffi-swrpg-setback",
+        DieType.Force => "ffi-d12 ffi-swrpg-force",
+        _ => ""
+    };
+
+    public enum DieType
+    {
+        Ability,
+        Proficiency,
+        Boost,
+        Difficulty,
+        Challenge,
+        Setback,
+        Force
+    }
+}

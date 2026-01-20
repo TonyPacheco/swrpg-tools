@@ -11,7 +11,10 @@
             @Skill.Ranks
         </div>
         <div class="col">
-            @Skill.DicePool
+            @foreach(var die in GenerateDicePool())
+            {
+                <Dice Type="die"/>
+            }
         </div>
     </div>
 }
@@ -28,7 +31,10 @@ else
             <input type="number" class="form-control" @bind="Skill.Ranks" />
         </div>
         <div class="col">
-            @Skill.DicePool
+            @foreach(var die in GenerateDicePool())
+            {
+                <Dice Type="die" />
+            }
         </div>
     </div>
 }
@@ -40,4 +46,45 @@ else
 
     [Parameter, EditorRequired]
     public bool Readonly { get; set; }
+
+    public List<Dice.DieType> GenerateDicePool()
+    {
+        if(Skill.Ranks < 0)
+        {
+            return [];
+        }
+        var dicePool = new List<Dice.DieType>();
+        int yellows;
+        int greens;
+        if(Skill.Ranks <= Skill.Base.Value)
+        {
+            yellows = Skill.Ranks;
+            greens = Skill.Base.Value - Skill.Ranks;
+        }
+        else
+        {
+            yellows = Skill.Base.Value;
+            greens = Skill.Ranks - Skill.Base.Value;
+        }
+
+        for(var i = 0; i < yellows; ++i)
+        {
+            dicePool.Add(Dice.DieType.Proficiency);
+        }
+        for(var i = 0; i < greens; ++i)
+        {
+            dicePool.Add(Dice.DieType.Ability);
+        }
+
+        for(var i = 0; i < Skill.BonusDice; ++i)
+        {
+            dicePool.Add(Dice.DieType.Boost);
+        }
+        for(var i = 0; i < Skill.SetbackCancels; ++i)
+        {
+            dicePool.Add(Dice.DieType.Setback);
+        }
+
+        return dicePool;
+    }
 }
