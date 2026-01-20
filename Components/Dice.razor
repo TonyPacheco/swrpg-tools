@@ -3,16 +3,25 @@
 @code 
 {
     [Parameter, EditorRequired] public DieType Type { get; set; }
+    [Parameter] public bool Outline { get; set; } = false;
 
-    public string GetDieClass() => Type switch
+    public string GetDieClass() => (Type, Outline) switch
     {
-        DieType.Ability => "ffi-d8 ffi-swrpg-ability",
-        DieType.Proficiency => "ffi-d12 ffi-swrpg-proficiency",
-        DieType.Boost => "ffi-d6 ffi-swrpg-boost",
-        DieType.Difficulty => "ffi-d8 ffi-swrpg-difficulty",
-        DieType.Challenge => "ffi-d12 ffi-swrpg-challenge",
-        DieType.Setback => "ffi-d6 ffi-swrpg-setback",
-        DieType.Force => "ffi-d12 ffi-swrpg-force",
+        (DieType.Ability, false) => "ffi-d8 ffi-swrpg-ability",
+        (DieType.Proficiency, false) => "ffi-d12 ffi-swrpg-proficiency",
+        (DieType.Boost, false) => "ffi-d6 ffi-swrpg-boost",
+        (DieType.Difficulty, false) => "ffi-d8 ffi-swrpg-difficulty",
+        (DieType.Challenge, false) => "ffi-d12 ffi-swrpg-challenge",
+        (DieType.Setback, false) => "ffi-d6 ffi-swrpg-setback",
+        (DieType.Force, false) => "ffi-d12 ffi-swrpg-force",
+
+        (DieType.Ability, _) => "ffi-d8-outline ffi-swrpg-ability",
+        (DieType.Proficiency, _) => "ffi-d12-outline ffi-swrpg-proficiency",
+        (DieType.Boost, _) => "ffi-d6-outline ffi-swrpg-boost",
+        (DieType.Difficulty, _) => "ffi-d8-outline ffi-swrpg-difficulty",
+        (DieType.Challenge, _) => "ffi-d12-outline ffi-swrpg-challenge",
+        (DieType.Setback, _) => "ffi-d6-outline ffi-swrpg-setback",
+        (DieType.Force, _) => "ffi-d12-outline ffi-swrpg-force",
         _ => ""
     };
 
