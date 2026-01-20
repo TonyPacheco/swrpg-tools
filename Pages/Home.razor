@@ -4,40 +4,66 @@
 @using System.Threading.Tasks
 
 <PageTitle>Character Sheet</PageTitle>
-
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <select value="@Model.CharacterName" @onchange="e => LoadCharacter(e.Value?.ToString())" class="form-control">
-                <option value="">-- Select Character --</option>
-                @foreach(var character in AvailableCharacters)
-                {
-                    <option value="@character.CharacterName">@character.CharacterName</option>
-                }
-            </select>
+        <div class="col-12" style="font-weight: bold; background-color: tan; margin-bottom: 10px">
+            Star Wars RPG Roster
+            @if(ViewMode == Mode.Sheet)
+            {
+                <button class="btn" style="float: right" @onclick="() => ViewMode = Mode.Manage">Manage</button>
+            }
+            else if(ViewMode == Mode.Manage)
+            {
+                <button class="btn" style="float: right" @onclick="() => ViewMode = Mode.Sheet">Character</button>
+            }
         </div>
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-4">
-                    <button class="btn btn-primary" @onclick="NewCharacter">New</button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-success" @onclick="SaveCharacter">Save</button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-outline-primary" @onclick="Nav.ToManageCharacters">Manage</button>
+    </div>
+
+    @if(ViewMode == Mode.Sheet)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <select value="@Model.CharacterName" @onchange="e => LoadCharacter(e.Value?.ToString())" class="form-control">
+                    <option value="">-- Select Character --</option>
+                    @foreach(var character in AvailableCharacters)
+                    {
+                        <option value="@character.CharacterName">@character.CharacterName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-4">
+                        <button class="btn btn-primary" @onclick="NewCharacter">New</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-success" @onclick="SaveCharacter">Save</button>
+                    </div>
+                    <div class="col-4">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <Character Model="Model"/>
+        <Character Model="Model" />
+    }
+    else if(ViewMode == Mode.Manage)
+    {
+        <CharacterManagement AvailableCharacters="AvailableCharacters" />
+    }
 </div>
 
-@code{
-    private const string ManagePageUrl = "/manageCharacters";
+@code
+{
     [Inject] public required StorageService Storage { get; set; }
     public List<CharacterModel> AvailableCharacters { get; set; } = [];
     public CharacterModel Model { get; set; } = new(true);
+    public Mode ViewMode { get; set; } = Mode.Sheet;
+
+    public enum Mode
+    {
+        Sheet,
+        Manage
+    }
 
     protected override async Task OnInitializedAsync()
     {
