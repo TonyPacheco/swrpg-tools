@@ -34,36 +34,38 @@
     <MudItem xs="12" Class="d-flex justify-center flex-grow-1">
         @if(Readonly)
         {
-            <MudChip Size="Size.Large" T="string">
-                <AvatarContent>
-                    <MudAvatar>
-                        @Model.Soak
-                    </MudAvatar>
-                </AvatarContent>
-                <ChildContent>
-                    Soak
-                </ChildContent>
-            </MudChip>
-            <MudChip Size="Size.Large" T="string">
-                <AvatarContent>
-                    <MudAvatar>
-                        @Model.DefenseRanged
-                    </MudAvatar>
-                </AvatarContent>
-                <ChildContent>
-                    Def. Ranged
-                </ChildContent>
-            </MudChip>
-            <MudChip Size="Size.Large" T="string">
-                <AvatarContent>
-                    <MudAvatar>
-                        @Model.DefenseMelee
-                    </MudAvatar>
-                </AvatarContent>
-                <ChildContent>
-                    Def. Melee
-                </ChildContent>
-            </MudChip>
+            <MudChipSet T="string" ReadOnly="true">
+                <MudChip Size="Size.Medium">
+                    <AvatarContent>
+                        <MudAvatar>
+                            @Model.Soak
+                        </MudAvatar>
+                    </AvatarContent>
+                    <ChildContent>
+                        Soak
+                    </ChildContent>
+                </MudChip>
+                <MudChip Size="Size.Medium">
+                    <AvatarContent>
+                        <MudAvatar>
+                            @Model.DefenseRanged
+                        </MudAvatar>
+                    </AvatarContent>
+                    <ChildContent>
+                        D. Ranged
+                    </ChildContent>
+                </MudChip>
+                <MudChip Size="Size.Medium">
+                    <AvatarContent>
+                        <MudAvatar>
+                            @Model.DefenseMelee
+                        </MudAvatar>
+                    </AvatarContent>
+                    <ChildContent>
+                        D. Melee
+                    </ChildContent>
+                </MudChip>
+            </MudChipSet>
         }
         else
         {
@@ -163,8 +165,6 @@
         </MudTable>
     </MudItem>
 
-    
-
     @* SKILLS SECTIONS *@
     <MudItem xs="12">
         <MudDataGrid Items="Model.Skills" Hover Groupable Hideable ShowMenuIcon Breakpoint="Breakpoint.None">
@@ -185,7 +185,7 @@
                 <PropertyColumn Property="s => s.Base.Name" Title="Base" Groupable="true" Hidden="true">
                     <CellTemplate></CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" />
+                <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" />
                 <PropertyColumn Property="s => s.Ranks" Title="Ranks" Groupable="false" Hideable="false" >
                     <CellTemplate>
                         @if (Readonly)
@@ -206,7 +206,6 @@
                         }
                         else
                         {
-                            @* <MudNumericField Variant="Variant.Outlined" @bind-Value="context.Item.Ranks" Min="0" Max="6" /> *@
                             <MudChipSet T="int" @bind-SelectedValue="context.Item.Ranks" >
                                 <MudChip Value="0">0</MudChip>
                                 <MudChip Value="1">1</MudChip>
