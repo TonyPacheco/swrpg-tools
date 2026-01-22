@@ -206,10 +206,7 @@
                                     </MudAvatar>
                                 </AvatarContent>
                                 <ChildContent>
-                                    @foreach(var die in context.Item.GenerateDicePool())
-                                    {
-                                        <Dice Type="die" />
-                                    }
+                                    <DicePool Dice="@context.Item.GenerateDicePool()"/>
                                 </ChildContent>
                             </MudChip>
                         }

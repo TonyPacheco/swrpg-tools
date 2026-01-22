@@ -142,13 +142,13 @@ namespace CharacterSheet
             Knowledge
         }
 
-        public List<Dice.DieType> GenerateDicePool()
+        public List<Die.DieType> GenerateDicePool()
         {
             if(Ranks < 0)
             {
                 return [];
             }
-            var dicePool = new List<Dice.DieType>();
+            var dicePool = new List<Die.DieType>();
             int yellows;
             int greens;
             if(Ranks <= Base.Value)
@@ -164,20 +164,20 @@ namespace CharacterSheet
 
             for(var i = 0; i < yellows; ++i)
             {
-                dicePool.Add(Dice.DieType.Proficiency);
+                dicePool.Add(Die.DieType.Proficiency);
             }
             for(var i = 0; i < greens; ++i)
             {
-                dicePool.Add(Dice.DieType.Ability);
+                dicePool.Add(Die.DieType.Ability);
             }
 
             for(var i = 0; i < BonusDice; ++i)
             {
-                dicePool.Add(Dice.DieType.Boost);
+                dicePool.Add(Die.DieType.Boost);
             }
             for(var i = 0; i < SetbackCancels; ++i)
             {
-                dicePool.Add(Dice.DieType.Setback);
+                dicePool.Add(Die.DieType.Setback);
             }
 
             return dicePool;

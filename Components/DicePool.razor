@@ -1,0 +1,10 @@
+﻿@foreach(var die in Dice)
+{
+    <Die Type="die" />
+}
+
+@code
+{
+    [Parameter, EditorRequired] public IEnumerable<Die.DieType> Dice { get; set; }
+    [Parameter] public bool Outline { get; set; } = false;
+}
