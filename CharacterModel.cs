@@ -1,4 +1,6 @@
-﻿namespace CharacterSheet
+﻿using CharacterSheet.Components;
+
+namespace CharacterSheet
 {
     public class CharacterModel
     {
@@ -138,6 +140,47 @@
             General,
             Combat,
             Knowledge
+        }
+
+        public List<Dice.DieType> GenerateDicePool()
+        {
+            if(Ranks < 0)
+            {
+                return [];
+            }
+            var dicePool = new List<Dice.DieType>();
+            int yellows;
+            int greens;
+            if(Ranks <= Base.Value)
+            {
+                yellows = Ranks;
+                greens = Base.Value - Ranks;
+            }
+            else
+            {
+                yellows = Base.Value;
+                greens = Ranks - Base.Value;
+            }
+
+            for(var i = 0; i < yellows; ++i)
+            {
+                dicePool.Add(Dice.DieType.Proficiency);
+            }
+            for(var i = 0; i < greens; ++i)
+            {
+                dicePool.Add(Dice.DieType.Ability);
+            }
+
+            for(var i = 0; i < BonusDice; ++i)
+            {
+                dicePool.Add(Dice.DieType.Boost);
+            }
+            for(var i = 0; i < SetbackCancels; ++i)
+            {
+                dicePool.Add(Dice.DieType.Setback);
+            }
+
+            return dicePool;
         }
     }
 }

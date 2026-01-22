@@ -1,9 +1,15 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Text.Json;
+using Microsoft.JSInterop;
 
 namespace CharacterSheet
 {
     public class StorageService
     {
+        public static class StorageKeys
+        {
+            public const string Characters = nameof(Characters);
+        }
+
         private readonly IJSRuntime _js;
         public StorageService(IJSRuntime jsr)
         {
@@ -15,5 +21,19 @@ namespace CharacterSheet
         public async ValueTask SetToSessionStorage(string key, string value) => await _js.InvokeVoidAsync("sessionStorage.setItem", key, value);
         public async ValueTask<string?> GetFromSessionStorage(string key, string? defaultValue = null) => await _js.InvokeAsync<string>("sessionStorage.getItem", key) ?? defaultValue;
         public async ValueTask RemoveFromSessionStorage(string key) => await _js.InvokeVoidAsync("sessionStorage.removeItem", key);
+
+        public async Task<T?> GetFromLocalStorage<T>(string key)
+        {
+            var json = await GetFromLocalStorage(key);
+            return json is null 
+                ? default 
+                : JsonSerializer.Deserialize<T>(json) ?? default;
+        }
+
+        public ValueTask SetToLocalStorage(string key , object value)
+        {
+            var json = JsonSerializer.Serialize(value);
+            return SetToLocalStorage(key, json);
+        }
     }
 }

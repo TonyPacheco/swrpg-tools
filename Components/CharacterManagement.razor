@@ -1,9 +1,9 @@
 ﻿@using System.Text.Json
 @using System.Text
 
-<div class="row">
-    <div class="col-md-8">
-        <table class="table">
+<MudGrid>
+    <MudItem xs="12" md="8">
+        <MudSimpleTable class="table">
             <thead>
                 <tr>
                     <th>Character</th>
@@ -18,32 +18,39 @@
                         <td>@character.CharacterName</td>
                         <td>Player Character</td>
                         <td>
-                            <button class="btn btn-danger" onclick="@(() => DeleteCharacter(character.CharacterName))">Delete</button>
+                            <MudButton onclick="@(() => DeleteCharacter(character.CharacterName))" 
+                                Color="Color.Error" 
+                                StartIcon="@Icons.Material.Filled.Delete"/>
                         </td>
                     </tr>
                 }
             </tbody>
-        </table>
-    </div>
-    <div class="col-md-4">
-        Import Characters
-        <br />
-        <InputFile accept="json" OnChange="Import" />
-        <br />
-        <br />
-        <button class="btn btn-primary" onclick="@Export">Export Characters</button>
-        <br />
-        <br />
-        <button class="btn btn-danger" onclick="@Clear">Delete All Characters</button>
-    </div>
-</div>
+        </MudSimpleTable>
+    </MudItem>
+    <MudItem sm="12" md="4">
+        <MudStack>
+            <MudFileUpload T="IBrowserFile" accept="json" OnFilesChanged="Import">
+                <ActivatorContent>
+                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Upload">
+                        Import Characters
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
+            <MudButton Variant="Variant.Outlined" onclick="@Export" StartIcon="@Icons.Material.Filled.FileDownload">
+                Export Characters
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" onclick="@Clear" StartIcon="@Icons.Material.Filled.Delete">
+                Clear Characters
+            </MudButton>
+        </MudStack>
+    </MudItem>
+</MudGrid>
 
 @code
 {
     [Inject] public required StorageService Storage { get; set; }
     [Inject] public required IJSRuntime Js { get; set; }
     [Parameter, EditorRequired] public List<CharacterModel> AvailableCharacters { get; set; }
-
 
     public async Task Import(InputFileChangeEventArgs e)
     {
@@ -54,22 +61,10 @@
         {
             return;
         }
-        var existingCharacters = await Storage.GetFromLocalStorage("Characters");
-        if(existingCharacters is null or "[]")
-        {
-            await Storage.SetToLocalStorage("Characters", json);
-            return;
-        }
-        var existingCharacterList = JsonSerializer.Deserialize<List<CharacterModel>>(existingCharacters);
-        if(existingCharacterList is null)
-        {
-            await Storage.SetToLocalStorage("Characters", json);
-            return;
-        }
-        existingCharacterList.AddRange(importedCharacters);
-        var mergedJson = JsonSerializer.Serialize(existingCharacterList);
-        await Storage.SetToLocalStorage("Characters", mergedJson);
-        AvailableCharacters = existingCharacterList;
+        var existingCharacters = await Storage.GetFromLocalStorage<List<CharacterModel>>("Characters") ?? [];
+        existingCharacters.AddRange(importedCharacters);
+        await Storage.SetToLocalStorage("Characters", existingCharacters);
+        AvailableCharacters = existingCharacters;
         StateHasChanged();
     }
 
@@ -88,6 +83,8 @@
     public async Task Clear()
     {
         await Storage.RemoveFromLocalStorage("Characters");
+        AvailableCharacters.Clear();
+        StateHasChanged();
     }
 
     public async Task DeleteCharacter(string characterName)
@@ -98,8 +95,7 @@
             return;
         }
         AvailableCharacters.Remove(characterToRemove);
-        var updatedJson = JsonSerializer.Serialize(AvailableCharacters);
-        await Storage.SetToLocalStorage("Characters", updatedJson);
+        await Storage.SetToLocalStorage("Characters", AvailableCharacters);
         StateHasChanged();
     }
 }

@@ -1,0 +1,24 @@
+﻿<MudItem xs="2" class="characteristic">
+    @if (Readonly)
+    {
+        <MudAvatar Size="Size.Large" Variant="Variant.Filled">
+            @Characteristic.Value
+        </MudAvatar>
+        <br/>
+        <MudText>@Characteristic.Name</MudText>
+    }
+    else
+    {
+        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Characteristic.Value" Min="0" Max="6" />
+        <MudText>@Characteristic.Name</MudText>
+    }
+</MudItem>
+
+@code 
+{
+    [Parameter, EditorRequired]
+    public Characteristic Characteristic { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool Readonly { get; set; }
+}
