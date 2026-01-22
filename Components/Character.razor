@@ -5,19 +5,19 @@
 
     @* PERSONA SECTION *@
     <MudItem xs="12" md="6">
-        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" Disabled="@Readonly" />
+        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" ReadOnly="@Readonly" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" Disabled="@Readonly" />
+        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" ReadOnly="@Readonly" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" Disabled="@Readonly" />
+        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" ReadOnly="@Readonly" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" Disabled="@Readonly" />
+        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" ReadOnly="@Readonly" />
     </MudItem>
     <MudItem xs="12" md="12">
-        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" Disabled="@Readonly" />
+        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" ReadOnly="@Readonly" />
     </MudItem>
 
     @* CHARACTERISTICS SECTION *@
@@ -71,13 +71,22 @@
         {
             <MudGrid>
                 <MudItem xs="4">
-                    <MudText>Soak</MudText><MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Soak" />
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Soak" />
+                        <MudText>Soak</MudText>
+                    </MudStack>
                 </MudItem>
                 <MudItem xs="4">
-                    <MudText>Def. Ranged</MudText><MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseRanged" />
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseRanged" />
+                        <MudText>Def. Ranged</MudText>
+                    </MudStack>
                 </MudItem>
                 <MudItem xs="4">
-                    <MudText>Def. Melee</MudText><MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseMelee" />
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseMelee" />
+                        <MudText>Def. Melee</MudText>
+                    </MudStack>
                 </MudItem>
             </MudGrid>
         }
