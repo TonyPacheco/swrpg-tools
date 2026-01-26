@@ -1,6 +1,6 @@
 ﻿using CharacterSheet.Components;
 
-namespace CharacterSheet
+namespace CharacterSheet.Models
 {
     public class CharacterModel
     {
