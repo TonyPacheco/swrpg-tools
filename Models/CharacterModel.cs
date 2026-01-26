@@ -75,6 +75,7 @@ namespace CharacterSheet.Models
         public int DefenseMelee { get; set; }
 
         public List<Skill> Skills { get; set; } = [];
+        public List<WeaponModel> Weapons { get; set; } = [];
 
         public State Current { get; set; } = new();
     }
