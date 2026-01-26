@@ -1,0 +1,33 @@
+﻿<i class="ffi @GetIconClass()" style="font-size: large"></i>
+
+@code
+{
+    [Parameter, EditorRequired] public IconType Type { get; set; }
+
+    public string GetIconClass() => Type switch
+    {
+        IconType.Advantage => "ffi-swrpg-advantage",
+        IconType.Despair => "ffi-swrpg-despair",
+        IconType.Failure => "ffi-swrpg-failure",
+        IconType.Force => "ffi-swrpg-force",
+        IconType.ForceOutline => "ffi-swrpg-force-outline",
+        IconType.ForceSplit => "ffi-swrpg-force-split",
+        IconType.Success => "ffi-swrpg-success",
+        IconType.Threat => "ffi-swrpg-threat",
+        IconType.Trimumph => "ffi-swrpg-triumph",
+        _ => string.Empty
+    };
+
+    public enum IconType
+    {
+        Advantage,
+        Despair,
+        Failure,
+        Force,
+        ForceOutline,
+        ForceSplit,
+        Success,
+        Threat,
+        Trimumph
+    }
+}

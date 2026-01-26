@@ -188,8 +188,90 @@
                     <MudNumericField Variant="Variant.Outlined" @bind-Value="context.Severity" />
                 </MudTd>
                 <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Outlined.Healing" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveInjury(context)"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Outlined.Healing" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveInjury(context)"/>
                 </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+
+    @* WEAPONS SECTION *@
+
+    <MudItem xs="12">
+        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.None">
+            <ToolBarContent>
+                <MudText>Weapons</MudText>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Weapon</MudTh>
+                <MudTh>Range</MudTh>
+                <MudTh>Skill</MudTh>
+                <MudTh>Dmg</MudTh>
+                <MudTh>Crit</MudTh>
+                <MudTh>
+                    @if (!Readonly)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" onclick="@AddWeapon" />
+                    }
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                @if (Readonly)
+                {
+                    <MudTd>
+                        <MudText>@context.Name</MudText>
+                    </MudTd>
+                    <MudTd>
+                        <MudText>@context.Range.ToString()</MudText>
+                    </MudTd>
+                    <MudTd>
+                        <MudText>@context.Skill?.Name</MudText>
+                    </MudTd>
+                    <MudTd>
+                        <MudText>@context.Damage</MudText>
+                    </MudTd>
+                    <MudTd>
+                         @for(var i = 0; i < context.Critical; ++i)
+                         {
+                            <DieIcon Type="DieIcon.IconType.Advantage"/>
+                         }
+                    </MudTd>
+                    <MudTd>
+
+                    </MudTd>
+                }
+                else
+                {
+                    <MudTd>
+                        <MudInput Placeholder="Weapon" Variant="Variant.Outlined" @bind-Value="context.Name" />
+                    </MudTd>
+                    <MudTd>
+                        <MudSelect Variant="Variant.Outlined" @bind-Value="context.Range">
+                            <MudSelectItem Value="WeaponData.Range.Empty" Disabled>Select</MudSelectItem>
+                            <MudSelectItem Value="WeaponData.Range.Engaged">Engaged</MudSelectItem>
+                            <MudSelectItem Value="WeaponData.Range.Short">Short</MudSelectItem>
+                            <MudSelectItem Value="WeaponData.Range.Medium">Medium</MudSelectItem>
+                            <MudSelectItem Value="WeaponData.Range.Long">Long</MudSelectItem>
+                            <MudSelectItem Value="WeaponData.Range.Extreme">Extreme</MudSelectItem>
+                        </MudSelect>
+                    </MudTd>
+                    <MudTd>
+                        <MudSelect Variant="Variant.Outlined" @bind-Value="context.Skill">
+                            @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat))
+                            {
+                                <MudSelectItem Value="skill">@skill.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudTd>
+                    <MudTd>
+                        <MudNumericField Placeholder="Damage" Min="0" Max="10" @bind-Value="context.Damage" />
+                    </MudTd>
+                    <MudTd>
+                        <MudNumericField Placeholder="Critical" Min="0" Max="10" @bind-Value="context.Critical" />
+                    </MudTd>
+                    <MudTd>
+                        <MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveWeapon(context)" />
+                    </MudTd>
+                }
             </RowTemplate>
         </MudTable>
     </MudItem>
@@ -198,7 +280,7 @@
     <MudItem xs="12">
         <MudDataGrid Items="Model.Skills" Hover Groupable Hideable ShowMenuIcon Breakpoint="Breakpoint.None">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">Skills</MudText>
+                <MudText>Skills</MudText>
             </ToolBarContent>
             <Columns>
                 <PropertyColumn Property="s => s.IsCareerSkill" Title="Career?" Hidden="true">
@@ -276,9 +358,19 @@
         });
     }
 
+    public void AddWeapon()
+    {
+        Model.Weapons.Add(new WeaponModel());
+    }
+
     public void RemoveInjury(CriticalInjury injury)
     {
         Model.Current.CriticalInjuries.Remove(injury);
+    }
+
+    public void RemoveWeapon(WeaponModel weapon)
+    {
+        Model.Weapons.Remove(weapon);
     }
 
     public async Task NewCharacter()
