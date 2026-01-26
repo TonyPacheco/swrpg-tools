@@ -3,61 +3,29 @@
 @using System.Text.Json
 @using System.Threading.Tasks
 
-<MudAppBar Elevation="1">
-    <MudText Typo="Typo.h5" Class="ml-3">SWRPG Character Manager</MudText>
-    <MudSpacer />
-    <MudIconButton 
-        Icon="@(ViewMode == Mode.Sheet ? Icons.Material.Filled.SaveAs : Icons.Material.Filled.ArrowBack)" 
-        Color="Color.Inherit" 
-        Edge="Edge.End" 
-        OnClick="ToggleViewMode" />
-</MudAppBar>
-
 <MudGrid>
-    @if(ViewMode == Mode.Sheet)
-    {
-        <MudItem xs="8">
-            <MudSelect T="string" ValueChanged="LoadCharacter" Placeholder="Select Character">
-                @foreach(var character in AvailableCharacters)
-                {
-                    <MudSelectItem value="@character.CharacterName">@character.CharacterName</MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
-        <MudItem xs="4" Class="d-flex justify-end flex-grow-1 gap-4">
-            <MudButton Variant="Variant.Filled" @onclick="NewCharacter">New</MudButton>
-            <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
-        </MudItem>
-    }
+    <MudItem xs="8">
+        <MudSelect T="string" ValueChanged="LoadCharacter" Placeholder="Select Character">
+            @foreach(var character in AvailableCharacters)
+            {
+                <MudSelectItem value="@character.CharacterName">@character.CharacterName</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="4" Class="d-flex justify-end flex-grow-1 gap-4">
+        <MudButton Variant="Variant.Filled" @onclick="NewCharacter">New</MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
+    </MudItem>
 </MudGrid>
-
 <br />
-@if(ViewMode == Mode.Sheet)
-{
-    <Character Model="Model" />
-}
-else if(ViewMode == Mode.Manage)
-{
-    <CharacterManagement AvailableCharacters="AvailableCharacters" />
-}
+<Character Model="Model" />
 
 @code
 {
     [Inject] public required StorageService Storage { get; set; }
     public List<CharacterModel> AvailableCharacters { get; set; } = [];
     public CharacterModel Model { get; set; } = new(true);
-    [Parameter, EditorRequired] public Mode ViewMode { get; set; } = Mode.Sheet;
 
-    public enum Mode
-    {
-        Sheet,
-        Manage
-    }
-
-    public void ToggleViewMode()
-    {
-        ViewMode = ViewMode == Mode.Sheet ? Mode.Manage : Mode.Sheet;
-    }
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,4 +1,5 @@
-﻿@using System.Text.Json
+﻿@page "/mgmt"
+@using System.Text.Json
 @using System.Text
 
 <MudGrid>
@@ -12,15 +13,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var character in AvailableCharacters)
+                @foreach(var character in Characters)
                 {
                     <tr>
                         <td>@character.CharacterName</td>
                         <td>Player Character</td>
                         <td>
-                            <MudButton onclick="@(() => DeleteCharacter(character.CharacterName))" 
-                                Color="Color.Error" 
-                                StartIcon="@Icons.Material.Filled.Delete"/>
+                            <MudButton onclick="@(() => DeleteCharacter(character.CharacterName))"
+                                       Color="Color.Error"
+                                       StartIcon="@Icons.Material.Filled.Delete" />
                         </td>
                     </tr>
                 }
@@ -50,7 +51,12 @@
 {
     [Inject] public required StorageService Storage { get; set; }
     [Inject] public required IJSRuntime Js { get; set; }
-    [Parameter, EditorRequired] public List<CharacterModel> AvailableCharacters { get; set; }
+    public List<CharacterModel> Characters { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Characters = (await Storage.GetFromLocalStorage<List<CharacterModel>>("Characters")) ?? [];
+    }
 
     public async Task Import(InputFileChangeEventArgs e)
     {
@@ -64,7 +70,7 @@
         var existingCharacters = await Storage.GetFromLocalStorage<List<CharacterModel>>("Characters") ?? [];
         existingCharacters.AddRange(importedCharacters);
         await Storage.SetToLocalStorage("Characters", existingCharacters);
-        AvailableCharacters = existingCharacters;
+        Characters = existingCharacters;
         StateHasChanged();
     }
 
@@ -83,19 +89,19 @@
     public async Task Clear()
     {
         await Storage.RemoveFromLocalStorage("Characters");
-        AvailableCharacters.Clear();
+        Characters.Clear();
         StateHasChanged();
     }
 
     public async Task DeleteCharacter(string characterName)
     {
-        var characterToRemove = AvailableCharacters.FirstOrDefault(c => c.CharacterName == characterName);
+        var characterToRemove = Characters.FirstOrDefault(c => c.CharacterName == characterName);
         if(characterToRemove is null)
         {
             return;
         }
-        AvailableCharacters.Remove(characterToRemove);
-        await Storage.SetToLocalStorage("Characters", AvailableCharacters);
+        Characters.Remove(characterToRemove);
+        await Storage.SetToLocalStorage("Characters", Characters);
         StateHasChanged();
     }
 }
