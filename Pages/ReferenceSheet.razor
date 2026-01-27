@@ -5,32 +5,18 @@
 
 <MudGrid>
     <MudItem xs="8">
+        <MudStack>
+            <MudText Typo="Typo.h5">@Model.CharacterName</MudText>
+            <MudText>@Model.Career: @Model.Specialization</MudText>
+        </MudStack>
     </MudItem>
-    <MudItem xs="4" Class="d-flex justify-end flex-grow-1 gap-4">
+    <MudItem xs="4">
         <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
         <MudButton Variant="Variant.Filled" @onclick="NavToSheet">Return</MudButton>
     </MudItem>
 </MudGrid>
 <br />
 <MudGrid>
-
-    @* PERSONA SECTION *@
-    <MudItem xs="12" md="6">
-        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" ReadOnly />
-    </MudItem>
-    <MudItem xs="12" md="6">
-        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" ReadOnly />
-    </MudItem>
-    <MudItem xs="12" md="6">
-        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" ReadOnly />
-    </MudItem>
-    <MudItem xs="12" md="6">
-        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" ReadOnly />
-    </MudItem>
-    <MudItem xs="12" md="12">
-        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" ReadOnly />
-    </MudItem>
-
     @* CHARACTERISTICS SECTION *@
     <MudItem xs="12">
         <MudText Typo="Typo.subtitle1" Class="subheader">Characteristics</MudText>
@@ -196,7 +182,7 @@
                 <PropertyColumn Property="s => s.Base.Name" Title="Base" Groupable="true" Hidden="true">
                     <CellTemplate></CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" />
+                <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" Grouping/>
                 <PropertyColumn Property="s => s.Ranks" Title="Ranks" Groupable="false" Hideable="false">
                     <CellTemplate>
                         <MudChip>
