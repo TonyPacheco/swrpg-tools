@@ -126,7 +126,7 @@
     @* WEAPONS SECTION *@
 
     <MudItem xs="12" Class="">
-        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.None" >
+        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.Xs" >
             <ToolBarContent>
                 <MudText>Weapons</MudText>
                 <MudSpacer />
@@ -156,9 +156,10 @@
                 </MudTd>
                 <MudTd>
                     <MudSelect Variant="Variant.Outlined" @bind-Value="context.Skill">
+                        <MudSelectItem T="string" Disabled>Select</MudSelectItem>
                         @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat))
                         {
-                            <MudSelectItem Value="skill">@skill.Name</MudSelectItem>
+                            <MudSelectItem Value="skill.Name">@skill.Name</MudSelectItem>
                         }
                     </MudSelect>
                 </MudTd>

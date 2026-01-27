@@ -4,9 +4,9 @@
     {
         public string Name { get; set; } = string.Empty;
         public WeaponData.Range Range { get; set; }
-        public Skill? Skill { get; set; }
-        public int Damage { get; set; }
-        public int Critical { get; set; }
+        public string? Skill { get; set; }
+        public int? Damage { get; set; }
+        public int? Critical { get; set; }
         public List<string> Qualities { get; set; } = [];
     }
 
