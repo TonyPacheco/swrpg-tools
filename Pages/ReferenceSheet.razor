@@ -1,0 +1,291 @@
+﻿@page "/sheet/{CharacterName}"
+@using System.ComponentModel.DataAnnotations
+@using System.Text.Json
+@using System.Threading.Tasks
+
+<MudGrid>
+    <MudItem xs="8">
+    </MudItem>
+    <MudItem xs="4" Class="d-flex justify-end flex-grow-1 gap-4">
+        <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="NavToSheet">Return</MudButton>
+    </MudItem>
+</MudGrid>
+<br />
+<MudGrid>
+
+    @* PERSONA SECTION *@
+    <MudItem xs="12" md="6">
+        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" ReadOnly />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" ReadOnly />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" ReadOnly />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" ReadOnly />
+    </MudItem>
+    <MudItem xs="12" md="12">
+        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" ReadOnly />
+    </MudItem>
+
+    @* CHARACTERISTICS SECTION *@
+    <MudItem xs="12">
+        <MudText Typo="Typo.subtitle1" Class="subheader">Characteristics</MudText>
+    </MudItem>
+    <CustomCharacteristic Characteristic="@Model.Brawn" Readonly />
+    <CustomCharacteristic Characteristic="@Model.Agility" Readonly />
+    <CustomCharacteristic Characteristic="@Model.Intellect" Readonly />
+    <CustomCharacteristic Characteristic="@Model.Cunning" Readonly />
+    <CustomCharacteristic Characteristic="@Model.Willpower" Readonly />
+    <CustomCharacteristic Characteristic="@Model.Presence" Readonly />
+
+    <MudItem xs="12" Class="d-flex justify-center flex-grow-1">
+        <MudChipSet T="string" ReadOnly="true">
+            <MudChip Size="Size.Medium">
+                <AvatarContent>
+                    <MudAvatar>
+                        @Model.Soak
+                    </MudAvatar>
+                </AvatarContent>
+                <ChildContent>
+                    Soak
+                </ChildContent>
+            </MudChip>
+            <MudChip Size="Size.Medium">
+                <AvatarContent>
+                    <MudAvatar>
+                        @Model.DefenseRanged
+                    </MudAvatar>
+                </AvatarContent>
+                <ChildContent>
+                    D. Ranged
+                </ChildContent>
+            </MudChip>
+            <MudChip Size="Size.Medium">
+                <AvatarContent>
+                    <MudAvatar>
+                        @Model.DefenseMelee
+                    </MudAvatar>
+                </AvatarContent>
+                <ChildContent>
+                    D. Melee
+                </ChildContent>
+            </MudChip>
+        </MudChipSet>
+    </MudItem>
+
+    @* ATTRIBUTES SECTION *@
+    <MudItem xs="12">
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudPaper Class="pa-4">
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudText>Wounds</MudText>
+                        </MudItem>
+                        <MudItem xs="8">
+                            <MudNumericField @bind-Value="@Model.Current.Wounds" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudText>/@Model.WoundThreshold</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudText>Strain</MudText>
+                        </MudItem>
+                        <MudItem xs="8">
+                            <MudNumericField @bind-Value="@Model.Current.Strain" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudText>/@Model.StrainThreshold</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudTable Items="@Model.Current.CriticalInjuries" Breakpoint="Breakpoint.None">
+            <ToolBarContent>
+                <MudText>Critical Injuries</MudText>
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Error" onclick="@AddInjury" />
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Injury</MudTh>
+                <MudTh>Severity</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    <MudInput Placeholder="Injury" Variant="Variant.Outlined" @bind-Value="context.Name" />
+                </MudTd>
+                <MudTd>
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="context.Severity" />
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Outlined.Healing" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveInjury(context)" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+
+    @* WEAPONS SECTION *@
+
+    <MudItem xs="12" Class="">
+        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.None">
+            <ToolBarContent>
+                <MudText>Weapons</MudText>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Weapon</MudTh>
+                <MudTh>Range</MudTh>
+                <MudTh>Skill</MudTh>
+                <MudTh>Dmg</MudTh>
+                <MudTh>Crit</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    <MudText>@context.Name</MudText>
+                </MudTd>
+                <MudTd>
+                    <MudText>@context.Range.ToString()</MudText>
+                </MudTd>
+                <MudTd>
+                    <MudText>@context.Skill?.Name</MudText>
+                </MudTd>
+                <MudTd>
+                    <MudText>@context.Damage</MudText>
+                </MudTd>
+                <MudTd>
+                    @for(var i = 0; i < context.Critical; ++i)
+                    {
+                        <DieIcon Type="DieIcon.IconType.Advantage" />
+                    }
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+
+    @* SKILLS SECTIONS *@
+    <MudItem xs="12">
+        <MudDataGrid Items="Model.Skills" Hover Groupable Hideable ShowMenuIcon Breakpoint="Breakpoint.None">
+            <ToolBarContent>
+                <MudText>Skills</MudText>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="s => s.IsCareerSkill" Title="Career?" Hidden="true">
+                    <CellTemplate>
+                        <MudCheckBox @bind-Value="@context.Item.IsCareerSkill" />
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="s => s.Name" Title="Name" Groupable="false" Hideable="false">
+                    <CellTemplate>
+                        <MudText>@context.Item.Name (@context.Item.Base.Abbreviation)</MudText>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="s => s.Base.Name" Title="Base" Groupable="true" Hidden="true">
+                    <CellTemplate></CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" />
+                <PropertyColumn Property="s => s.Ranks" Title="Ranks" Groupable="false" Hideable="false">
+                    <CellTemplate>
+                        <MudChip>
+                            <AvatarContent>
+                                <MudAvatar>
+                                    @context.Item.Ranks
+                                </MudAvatar>
+                            </AvatarContent>
+                            <ChildContent>
+                                <DicePool Dice="@context.Item.GenerateDicePool()" />
+                            </ChildContent>
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
+</MudGrid>
+
+@code 
+{
+    [Parameter] public string CharacterName { get; set; } = string.Empty;
+    [Inject] public required StorageService Storage { get; set; }
+    [Inject] public required NavigationManager NavigationManager { get; set; }
+    public List<CharacterModel> AvailableCharacters { get; set; } = [];
+    public CharacterModel Model { get; set; } = new(true);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var json = await Storage.GetFromLocalStorage("Characters");
+        if(string.IsNullOrWhiteSpace(json))
+        {
+            Console.WriteLine("No saved characters found.");
+            return;
+        }
+        AvailableCharacters = JsonSerializer.Deserialize<List<CharacterModel>>(json) ?? [];
+        await LoadCharacter(CharacterName);
+    }
+
+    public void AddInjury()
+    {
+        Model.Current.CriticalInjuries.Add(new CriticalInjury
+        {
+            Name = "",
+            Severity = 1
+        });
+    }
+
+    public void RemoveInjury(CriticalInjury injury)
+    {
+        Model.Current.CriticalInjuries.Remove(injury);
+    }
+
+    public async Task LoadCharacter(string characterName)
+    {
+        if(string.IsNullOrEmpty(characterName))
+        {
+            return;
+        }
+        var character = AvailableCharacters.FirstOrDefault(c => c.CharacterName == characterName);
+        if(character is null)
+        {
+            Console.Error.WriteLine("ERROR: Character not found.");
+            return;
+        }
+        Model = character;
+        StateHasChanged();
+    }
+
+    public async Task SaveCharacter()
+    {
+        if(string.IsNullOrWhiteSpace(Model.CharacterName))
+        {
+            Console.Error.WriteLine("ERROR: Character must have a name to be saved.");
+            return;
+        }
+        var existing = AvailableCharacters.FirstOrDefault(c => c.CharacterName == Model.CharacterName);
+        if(existing != null)
+        {
+            Console.WriteLine("Updating existing character.");
+            existing = Model;
+        }
+        else
+        {
+            Console.WriteLine("Saving new character.");
+            AvailableCharacters.Add(Model);
+        }
+        await Storage.SetToLocalStorage("Characters", JsonSerializer.Serialize(AvailableCharacters));
+    }
+
+    public void NavToSheet() => NavigationManager.NavigateTo($"/{CharacterName}");
+}

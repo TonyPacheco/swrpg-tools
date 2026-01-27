@@ -1,11 +1,12 @@
 ﻿@page "/"
+@page "/{CharacterName}"
 @using System.ComponentModel.DataAnnotations
 @using System.Text.Json
 @using System.Threading.Tasks
 
 <MudGrid>
     <MudItem xs="8">
-        <MudSelect T="string" ValueChanged="LoadCharacter" Placeholder="Select Character">
+        <MudSelect T="string" Value="CharacterName" ValueChanged="LoadCharacter" Placeholder="Select Character">
             @foreach(var character in AvailableCharacters)
             {
                 <MudSelectItem value="@character.CharacterName">@character.CharacterName</MudSelectItem>
@@ -20,96 +21,58 @@
 <br />
 <MudGrid>
     <MudItem xs="12" Class="d-flex justify-end flex-grow-1 gap-4">
-        <MudButton Variant="Variant.Filled" @onclick="ToggleReadonly">@(Readonly ? "Edit" : "Readonly")</MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="GoToRefView">Go To Reference View</MudButton>
     </MudItem>
 
     @* PERSONA SECTION *@
     <MudItem xs="12" md="6">
-        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" ReadOnly="@Readonly" />
+        Character Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.CharacterName" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" ReadOnly="@Readonly" />
+        Player Name: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.PlayerName" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" ReadOnly="@Readonly" />
+        Career: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Career" />
     </MudItem>
     <MudItem xs="12" md="6">
-        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" ReadOnly="@Readonly" />
+        Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" />
     </MudItem>
     <MudItem xs="12" md="12">
-        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" ReadOnly="@Readonly" />
+        Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" />
     </MudItem>
 
     @* CHARACTERISTICS SECTION *@
     <MudItem xs="12">
         <MudText Typo="Typo.subtitle1" Class="subheader">Characteristics</MudText>
     </MudItem>
-    <CustomCharacteristic Characteristic="@Model.Brawn" Readonly="@Readonly" />
-    <CustomCharacteristic Characteristic="@Model.Agility" Readonly="@Readonly" />
-    <CustomCharacteristic Characteristic="@Model.Intellect" Readonly="@Readonly" />
-    <CustomCharacteristic Characteristic="@Model.Cunning" Readonly="@Readonly" />
-    <CustomCharacteristic Characteristic="@Model.Willpower" Readonly="@Readonly" />
-    <CustomCharacteristic Characteristic="@Model.Presence" Readonly="@Readonly" />
+    <CustomCharacteristic Characteristic="@Model.Brawn" Readonly="false" />
+    <CustomCharacteristic Characteristic="@Model.Agility" Readonly="false" />
+    <CustomCharacteristic Characteristic="@Model.Intellect" Readonly="false" />
+    <CustomCharacteristic Characteristic="@Model.Cunning" Readonly="false" />
+    <CustomCharacteristic Characteristic="@Model.Willpower" Readonly="false" />
+    <CustomCharacteristic Characteristic="@Model.Presence" Readonly="false" />
 
     <MudItem xs="12" Class="d-flex justify-center flex-grow-1">
-        @if(Readonly)
-        {
-            <MudChipSet T="string" ReadOnly="true">
-                <MudChip Size="Size.Medium">
-                    <AvatarContent>
-                        <MudAvatar>
-                            @Model.Soak
-                        </MudAvatar>
-                    </AvatarContent>
-                    <ChildContent>
-                        Soak
-                    </ChildContent>
-                </MudChip>
-                <MudChip Size="Size.Medium">
-                    <AvatarContent>
-                        <MudAvatar>
-                            @Model.DefenseRanged
-                        </MudAvatar>
-                    </AvatarContent>
-                    <ChildContent>
-                        D. Ranged
-                    </ChildContent>
-                </MudChip>
-                <MudChip Size="Size.Medium">
-                    <AvatarContent>
-                        <MudAvatar>
-                            @Model.DefenseMelee
-                        </MudAvatar>
-                    </AvatarContent>
-                    <ChildContent>
-                        D. Melee
-                    </ChildContent>
-                </MudChip>
-            </MudChipSet>
-        }
-        else
-        {
-            <MudGrid>
-                <MudItem xs="4">
-                    <MudStack AlignItems="AlignItems.Center">
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Soak" />
-                        <MudText>Soak</MudText>
-                    </MudStack>
-                </MudItem>
-                <MudItem xs="4">
-                    <MudStack AlignItems="AlignItems.Center">
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseRanged" />
-                        <MudText>Def. Ranged</MudText>
-                    </MudStack>
-                </MudItem>
-                <MudItem xs="4">
-                    <MudStack AlignItems="AlignItems.Center">
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseMelee" />
-                        <MudText>Def. Melee</MudText>
-                    </MudStack>
-                </MudItem>
-            </MudGrid>
-        }
+        <MudGrid>
+            <MudItem xs="4">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Soak" />
+                    <MudText>Soak</MudText>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="4">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseRanged" />
+                    <MudText>Def. Ranged</MudText>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="4">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.DefenseMelee" />
+                    <MudText>Def. Melee</MudText>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
     </MudItem>
 
     @* ATTRIBUTES SECTION *@
@@ -119,50 +82,16 @@
         <MudPaper Class="pa-4">
             <MudGrid>
                 <MudItem xs="6">
-                    @if(Readonly)
-                    {
-                        <MudGrid>
-                            <MudItem xs="12">
-                                <MudText>Wounds</MudText>
-                            </MudItem>
-                            <MudItem xs="8">
-                                <MudNumericField @bind-Value="@Model.Current.Wounds" />
-                            </MudItem>
-                            <MudItem xs="4">
-                                <MudText>/@Model.WoundThreshold</MudText>
-                            </MudItem>
-                        </MudGrid>
-                    }
-                    else
-                    {
-                        <MudText>Max Wounds</MudText>
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.WoundThreshold" />
-                        <MudText>Wounds</MudText>
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Wounds" />
-                    }
+                    <MudText>Max Wounds</MudText>
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.WoundThreshold" />
+                    <MudText>Wounds</MudText>
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Wounds" />
                 </MudItem>
                 <MudItem xs="6">
-                    @if(Readonly)
-                    {
-                        <MudGrid>
-                            <MudItem xs="12">
-                                <MudText>Strain</MudText>
-                            </MudItem>
-                            <MudItem xs="8">
-                                <MudNumericField @bind-Value="@Model.Current.Strain" />
-                            </MudItem>
-                            <MudItem xs="4">
-                                <MudText>/@Model.StrainThreshold</MudText>
-                            </MudItem>
-                        </MudGrid>
-                    }
-                    else
-                    {
-                        <MudText>Max Strain</MudText>
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.StrainThreshold" />
-                        <MudText>Strain</MudText>
-                        <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Strain" />
-                    }
+                    <MudText>Max Strain</MudText>
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.StrainThreshold" />
+                    <MudText>Strain</MudText>
+                    <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Strain" />
                 </MudItem>
             </MudGrid>
         </MudPaper>
@@ -172,13 +101,13 @@
         <MudTable Items="@Model.Current.CriticalInjuries" Breakpoint="Breakpoint.None">
             <ToolBarContent>
                 <MudText>Critical Injuries</MudText>
+                <MudSpacer/>
+                <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Error" onclick="@AddInjury" />
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Injury</MudTh>
                 <MudTh>Severity</MudTh>
-                <MudTh>
-                    <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Error" onclick="@AddInjury" />
-                </MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>
@@ -196,82 +125,52 @@
 
     @* WEAPONS SECTION *@
 
-    <MudItem xs="12">
-        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.None">
+    <MudItem xs="12" Class="">
+        <MudTable Items="@Model.Weapons" Breakpoint="Breakpoint.None" >
             <ToolBarContent>
                 <MudText>Weapons</MudText>
-            </ToolBarContent>
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" onclick="@AddWeapon" />
+             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Weapon</MudTh>
                 <MudTh>Range</MudTh>
                 <MudTh>Skill</MudTh>
                 <MudTh>Dmg</MudTh>
                 <MudTh>Crit</MudTh>
-                <MudTh>
-                    @if (!Readonly)
-                    {
-                        <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" onclick="@AddWeapon" />
-                    }
-                </MudTh>
+                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                @if (Readonly)
-                {
-                    <MudTd>
-                        <MudText>@context.Name</MudText>
-                    </MudTd>
-                    <MudTd>
-                        <MudText>@context.Range.ToString()</MudText>
-                    </MudTd>
-                    <MudTd>
-                        <MudText>@context.Skill?.Name</MudText>
-                    </MudTd>
-                    <MudTd>
-                        <MudText>@context.Damage</MudText>
-                    </MudTd>
-                    <MudTd>
-                         @for(var i = 0; i < context.Critical; ++i)
-                         {
-                            <DieIcon Type="DieIcon.IconType.Advantage"/>
-                         }
-                    </MudTd>
-                    <MudTd>
-
-                    </MudTd>
-                }
-                else
-                {
-                    <MudTd>
-                        <MudInput Placeholder="Weapon" Variant="Variant.Outlined" @bind-Value="context.Name" />
-                    </MudTd>
-                    <MudTd>
-                        <MudSelect Variant="Variant.Outlined" @bind-Value="context.Range">
-                            <MudSelectItem Value="WeaponData.Range.Empty" Disabled>Select</MudSelectItem>
-                            <MudSelectItem Value="WeaponData.Range.Engaged">Engaged</MudSelectItem>
-                            <MudSelectItem Value="WeaponData.Range.Short">Short</MudSelectItem>
-                            <MudSelectItem Value="WeaponData.Range.Medium">Medium</MudSelectItem>
-                            <MudSelectItem Value="WeaponData.Range.Long">Long</MudSelectItem>
-                            <MudSelectItem Value="WeaponData.Range.Extreme">Extreme</MudSelectItem>
-                        </MudSelect>
-                    </MudTd>
-                    <MudTd>
-                        <MudSelect Variant="Variant.Outlined" @bind-Value="context.Skill">
-                            @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat))
-                            {
-                                <MudSelectItem Value="skill">@skill.Name</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudTd>
-                    <MudTd>
-                        <MudNumericField Placeholder="Damage" Min="0" Max="10" @bind-Value="context.Damage" />
-                    </MudTd>
-                    <MudTd>
-                        <MudNumericField Placeholder="Critical" Min="0" Max="10" @bind-Value="context.Critical" />
-                    </MudTd>
-                    <MudTd>
-                        <MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveWeapon(context)" />
-                    </MudTd>
-                }
+                <MudTd>
+                    <MudInput Placeholder="Weapon" Variant="Variant.Outlined" @bind-Value="context.Name" />
+                </MudTd>
+                <MudTd>
+                    <MudSelect Variant="Variant.Outlined" @bind-Value="context.Range">
+                        <MudSelectItem Value="WeaponData.Range.Empty" Disabled>Select</MudSelectItem>
+                        <MudSelectItem Value="WeaponData.Range.Engaged">Engaged</MudSelectItem>
+                        <MudSelectItem Value="WeaponData.Range.Short">Short</MudSelectItem>
+                        <MudSelectItem Value="WeaponData.Range.Medium">Medium</MudSelectItem>
+                        <MudSelectItem Value="WeaponData.Range.Long">Long</MudSelectItem>
+                        <MudSelectItem Value="WeaponData.Range.Extreme">Extreme</MudSelectItem>
+                    </MudSelect>
+                </MudTd>
+                <MudTd>
+                    <MudSelect Variant="Variant.Outlined" @bind-Value="context.Skill">
+                        @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat))
+                        {
+                            <MudSelectItem Value="skill">@skill.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudTd>
+                <MudTd>
+                    <MudNumericField Placeholder="Damage" Min="0" Max="10" @bind-Value="context.Damage" />
+                </MudTd>
+                <MudTd>
+                    <MudNumericField Placeholder="Critical" Min="0" Max="10" @bind-Value="context.Critical" />
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Outlined" Color="Color.Error" @onclick="() => RemoveWeapon(context)" />
+                </MudTd>
             </RowTemplate>
         </MudTable>
     </MudItem>
@@ -299,30 +198,14 @@
                 <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" />
                 <PropertyColumn Property="s => s.Ranks" Title="Ranks" Groupable="false" Hideable="false">
                     <CellTemplate>
-                        @if(Readonly)
-                        {
-                            <MudChip>
-                                <AvatarContent>
-                                    <MudAvatar>
-                                        @context.Item.Ranks
-                                    </MudAvatar>
-                                </AvatarContent>
-                                <ChildContent>
-                                    <DicePool Dice="@context.Item.GenerateDicePool()" />
-                                </ChildContent>
-                            </MudChip>
-                        }
-                        else
-                        {
-                            <MudChipSet T="int" @bind-SelectedValue="context.Item.Ranks">
-                                <MudChip Value="0">0</MudChip>
-                                <MudChip Value="1">1</MudChip>
-                                <MudChip Value="2">2</MudChip>
-                                <MudChip Value="3">3</MudChip>
-                                <MudChip Value="4">4</MudChip>
-                                <MudChip Value="5">5</MudChip>
-                            </MudChipSet>
-                        }
+                        <MudChipSet T="int" @bind-SelectedValue="context.Item.Ranks">
+                            <MudChip Value="0">0</MudChip>
+                            <MudChip Value="1">1</MudChip>
+                            <MudChip Value="2">2</MudChip>
+                            <MudChip Value="3">3</MudChip>
+                            <MudChip Value="4">4</MudChip>
+                            <MudChip Value="5">5</MudChip>
+                        </MudChipSet>
                     </CellTemplate>
                 </PropertyColumn>
             </Columns>
@@ -332,11 +215,11 @@
 
 @code
 {
+    [Parameter] public string? CharacterName { get; set; }
+    [Inject] public required NavigationManager NavigationManager { get; set; }
     [Inject] public required StorageService Storage { get; set; }
     public List<CharacterModel> AvailableCharacters { get; set; } = [];
     public CharacterModel Model { get; set; } = new(true);
-    public bool Readonly = true;
-    public void ToggleReadonly() => Readonly = !Readonly;
 
     protected override async Task OnInitializedAsync()
     {
@@ -347,6 +230,10 @@
             return;
         }
         AvailableCharacters = JsonSerializer.Deserialize<List<CharacterModel>>(json) ?? [];
+        if (!string.IsNullOrWhiteSpace(CharacterName))
+        {
+            await LoadCharacter(CharacterName);
+        }
     }
 
     public void AddInjury()
@@ -419,4 +306,6 @@
         }
         await Storage.SetToLocalStorage("Characters", JsonSerializer.Serialize(AvailableCharacters));
     }
+
+    public void GoToRefView() => NavigationManager.NavigateTo($"/sheet/{Model.CharacterName}");
 }
