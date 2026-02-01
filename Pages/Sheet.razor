@@ -215,7 +215,7 @@
                 <PropertyColumn Property="s => s.Type" Title="Type" Groupable="true" Hidden="true" />
                 <PropertyColumn Property="s => s.Ranks" Title="Ranks" Groupable="false" Hideable="false">
                     <CellTemplate>
-                        <MudChipSet T="int" @bind-SelectedValue="context.Item.Ranks">
+                        <MudChipSet Variant="Variant.Outlined" Color="Color.Inherit" SelectedColor="Color.Primary" T="int" @bind-SelectedValue="context.Item.Ranks" >
                             <MudChip Value="0">0</MudChip>
                             <MudChip Value="1">1</MudChip>
                             <MudChip Value="2">2</MudChip>
