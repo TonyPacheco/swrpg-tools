@@ -156,10 +156,10 @@
                 </MudTd>
                 <MudTd>
                     <MudSelect Variant="Variant.Outlined" @bind-Value="context.Skill">
-                        <MudSelectItem T="string" Disabled>Select</MudSelectItem>
+                        <MudSelectItem T="Skill" Disabled>Select</MudSelectItem>
                         @foreach(var skill in Model.Skills.Where(s => s.Type == Skill.SkillType.Combat))
                         {
-                            <MudSelectItem Value="skill.Name">@skill.Name</MudSelectItem>
+                            <MudSelectItem Value="skill">@skill.Name</MudSelectItem>
                         }
                     </MudSelect>
                 </MudTd>

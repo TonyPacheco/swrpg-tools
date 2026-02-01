@@ -134,8 +134,8 @@
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Weapon</MudTh>
-                <MudTh>Range</MudTh>
-                <MudTh>Skill</MudTh>
+                <MudTh>Rng</MudTh>
+                <MudTh>Dice</MudTh>
                 <MudTh>Dmg</MudTh>
                 <MudTh>Crit</MudTh>
             </HeaderContent>
@@ -144,10 +144,10 @@
                     <MudText>@context.Name</MudText>
                 </MudTd>
                 <MudTd>
-                    <MudText>@context.Range.ToString()</MudText>
+                    <MudText>@context.RangeAbbreviation</MudText>
                 </MudTd>
                 <MudTd>
-                    <MudText>@context.Skill</MudText>
+                    <DicePool Dice="@(context.Skill?.GenerateDicePool() ?? [])" />
                 </MudTd>
                 <MudTd>
                     <MudText>@context.Damage</MudText>

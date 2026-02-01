@@ -4,10 +4,20 @@
     {
         public string Name { get; set; } = string.Empty;
         public WeaponData.Range Range { get; set; }
-        public string? Skill { get; set; }
+        public Skill? Skill { get; set; }
         public int? Damage { get; set; }
         public int? Critical { get; set; }
         public List<string> Qualities { get; set; } = [];
+
+        public string RangeAbbreviation => Range switch
+        {
+            WeaponData.Range.Engaged => "E",
+            WeaponData.Range.Short => "S",
+            WeaponData.Range.Medium => "M",
+            WeaponData.Range.Long => "L",
+            WeaponData.Range.Extreme => "X",
+            _ => string.Empty,
+        };
     }
 
     public static class WeaponData
