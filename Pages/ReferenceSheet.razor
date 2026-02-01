@@ -144,7 +144,9 @@
                     <MudText>@context.Name</MudText>
                 </MudTd>
                 <MudTd>
-                    <MudText>@context.RangeAbbreviation</MudText>
+                    <MudTooltip Placement="Placement.Top" Text="@($"Range: {context.Range}")">
+                        <MudText>@context.RangeAbbreviation</MudText>
+                    </MudTooltip>
                 </MudTd>
                 <MudTd>
                     <DicePool Dice="@context.DicePool" />
