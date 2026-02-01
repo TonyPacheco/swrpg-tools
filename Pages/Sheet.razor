@@ -201,7 +201,7 @@
             <Columns>
                 <PropertyColumn Property="s => s.IsCareerSkill" Title="Career?" Hidden="true">
                     <CellTemplate>
-                        <MudCheckBox @bind-Value="@context.Item.IsCareerSkill" />
+                        <MudSwitch Color="Color.Primary" @bind-Value="@context.Item.IsCareerSkill" />
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="s => s.Name" Title="Name" Groupable="false" Hideable="false">
