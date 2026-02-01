@@ -138,6 +138,7 @@
                 <MudTh>Skill</MudTh>
                 <MudTh>Dmg</MudTh>
                 <MudTh>Crit</MudTh>
+                <MudTh>Additonal Dice</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -170,7 +171,22 @@
                     <MudNumericField Placeholder="Critical" Min="0" Max="10" @bind-Value="context.Critical" />
                 </MudTd>
                 <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Outlined" Color="Color.Error" @onclick="() => RemoveWeapon(context)" />
+                    <MudStack>
+                        <MudElement>
+                            <MudText>Additional Dice</MudText>
+                            <MudButton Variant="Variant.Outlined" OnClick="() => context.AdditionalDice.Add(Die.DieType.Boost)"><Die Type="Die.DieType.Boost" /></MudButton>
+                            <MudButton Variant="Variant.Outlined" Onclick="() => context.AdditionalDice.Add(Die.DieType.Setback)"><Die Type="Die.DieType.Setback" /></MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="() => context.AdditionalDice = []">Clear</MudButton>
+                        </MudElement>
+                        <MudElement>
+                            <DicePool Dice="@context.AdditionalDice" />
+                        </MudElement>
+                    </MudStack>
+                </MudTd>
+                <MudTd>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="() => RemoveWeapon(context)" >
+                        Delete Weapon
+                    </MudButton>
                 </MudTd>
             </RowTemplate>
         </MudTable>

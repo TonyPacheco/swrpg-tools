@@ -1,4 +1,6 @@
-﻿namespace CharacterSheet.Models
+﻿using CharacterSheet.Components;
+
+namespace CharacterSheet.Models
 {
     public class WeaponModel
     {
@@ -8,6 +10,11 @@
         public int? Damage { get; set; }
         public int? Critical { get; set; }
         public List<string> Qualities { get; set; } = [];
+        public List<Die.DieType> AdditionalDice { get; set; } = [];
+
+        public List<Die.DieType> DicePool => Skill != null
+            ? Skill.GenerateDicePool().Concat(AdditionalDice).ToList()
+            : AdditionalDice;
 
         public string RangeAbbreviation => Range switch
         {

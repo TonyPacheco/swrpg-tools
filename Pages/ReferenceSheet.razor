@@ -147,7 +147,7 @@
                     <MudText>@context.RangeAbbreviation</MudText>
                 </MudTd>
                 <MudTd>
-                    <DicePool Dice="@(context.Skill?.GenerateDicePool() ?? [])" />
+                    <DicePool Dice="@context.DicePool" />
                 </MudTd>
                 <MudTd>
                     <MudText>@context.Damage</MudText>
