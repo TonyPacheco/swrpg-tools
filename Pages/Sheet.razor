@@ -40,6 +40,12 @@
     <MudItem xs="12" md="12">
         Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" />
     </MudItem>
+    <MudItem xs="6">
+        XP: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Xp" />
+    </MudItem>
+    <MudItem xs="6">
+        Credits: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Credits" />
+    </MudItem>
 
     @* CHARACTERISTICS SECTION *@
     <MudItem xs="12">
@@ -229,6 +235,33 @@
         </MudDataGrid>
     </MudItem>
 </MudGrid>
+<br/>
+@* TALENTS SECTION *@
+<MudItem xs="12">
+    <MudTable Items="@Model.Talents" Breakpoint="Breakpoint.None">
+        <ToolBarContent>
+            <MudText>Talents</MudText>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" onclick="@AddTalent" />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Talent</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudTextField Placeholder="Talent" Variant="Variant.Outlined" @bind-Value="context.Name" />
+            </MudTd>
+            <MudTd>
+                <MudTextField Placeholder="Description" Variant="Variant.Outlined" Lines="5" AutoGrow="true" @bind-Value="context.Description" />
+            </MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" Variant="Variant.Filled" Color="Color.Error" @onclick="() => RemoveTalent(context)" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudItem>
 
 @code
 {
@@ -253,6 +286,11 @@
         }
     }
 
+    public void AddTalent()
+    {
+        Model.Talents.Add(new Talent());
+    }
+
     public void AddInjury()
     {
         Model.Current.CriticalInjuries.Add(new CriticalInjury
@@ -265,6 +303,11 @@
     public void AddWeapon()
     {
         Model.Weapons.Add(new WeaponModel());
+    }
+
+    public void RemoveTalent(Talent talent)
+    {
+        Model.Talents.Remove(talent);
     }
 
     public void RemoveInjury(CriticalInjury injury)

@@ -14,6 +14,12 @@
         <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
         <MudButton Variant="Variant.Filled" @onclick="NavToSheet">Return</MudButton>
     </MudItem>
+    <MudItem xs="6">
+        XP: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Xp" />
+    </MudItem>
+    <MudItem xs="6">
+        Credits: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Credits" />
+    </MudItem>
 </MudGrid>
 <br />
 <MudGrid>
@@ -27,7 +33,6 @@
     <CustomCharacteristic Characteristic="@Model.Cunning" Readonly />
     <CustomCharacteristic Characteristic="@Model.Willpower" Readonly />
     <CustomCharacteristic Characteristic="@Model.Presence" Readonly />
-
     <MudItem xs="12" Class="d-flex justify-center flex-grow-1">
         <MudChipSet T="string" ReadOnly="true">
             <MudChip Size="Size.Medium">
@@ -62,6 +67,8 @@
             </MudChip>
         </MudChipSet>
     </MudItem>
+
+    
 
     @* ATTRIBUTES SECTION *@
     <MudItem xs="12">
@@ -202,7 +209,28 @@
             </Columns>
         </MudDataGrid>
     </MudItem>
+
+    @* TALENTS SECTION *@
+    <MudItem xs="12">
+        <MudText Typo="Typo.subtitle1" Class="subheader">Talents</MudText>
+        <MudGrid>
+            @foreach(var talent in Model.Talents)
+            {
+                <MudItem xs="12" md="6" lg="4">
+                    <MudCard>
+                        <MudCardHeader>
+                            <MudText>@talent.Name</MudText>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>@talent.Description</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudItem>
 </MudGrid>
+
 
 @code 
 {

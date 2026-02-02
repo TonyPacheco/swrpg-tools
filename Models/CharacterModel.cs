@@ -76,6 +76,7 @@ namespace CharacterSheet.Models
 
         public List<Skill> Skills { get; set; } = [];
         public List<WeaponModel> Weapons { get; set; } = [];
+        public List<Talent> Talents { get; set; } = [];
 
         public State Current { get; set; } = new();
     }
@@ -84,6 +85,8 @@ namespace CharacterSheet.Models
     {
         public int Wounds { get; set; }
         public int Strain { get; set; }
+        public int Xp { get; set; }
+        public int Credits { get; set; }
         public List<CriticalInjury> CriticalInjuries { get; set; } = [];
     }
 
@@ -183,5 +186,11 @@ namespace CharacterSheet.Models
 
             return dicePool;
         }
+    }
+
+    public class Talent
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }
