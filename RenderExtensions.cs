@@ -8,23 +8,38 @@ namespace CharacterSheet
 
         public static MarkupString RenderWithIcons(this string text)
         {
-            var result = text.Replace("(Dk)", GetIconHtml(ForceIconType.Dark));
-            result = result.Replace("(Lt)", GetIconHtml(ForceIconType.Light));
-            result = result.Replace("(Sp)", GetIconHtml(ForceIconType.Split));
+            var result = text.Replace("(D)", GetIconHtml(ForceIconType.Dark));
+            result = text.Replace("(Dark)", GetIconHtml(ForceIconType.Dark));
+            result = result.Replace("(L)", GetIconHtml(ForceIconType.Light));
+            result = result.Replace("(Light)", GetIconHtml(ForceIconType.Light));
+            result = result.Replace("(F)", GetIconHtml(ForceIconType.Split));
+            result = result.Replace("(Force)", GetIconHtml(ForceIconType.Split));
 
-            result = result.Replace("[Sb]", GetIconHtml(DieType.Setback));
-            result = result.Replace("[Bo]", GetIconHtml(DieType.Boost));
-            result = result.Replace("[Ab]", GetIconHtml(DieType.Ability));
-            result = result.Replace("[Pr]", GetIconHtml(DieType.Proficiency));
-            result = result.Replace("[Df]", GetIconHtml(DieType.Difficulty));
-            result = result.Replace("[Ch]", GetIconHtml(DieType.Challenge));
+            result = result.Replace("[S]", GetIconHtml(DieType.Setback));
+            result = result.Replace("[Black]", GetIconHtml(DieType.Setback));
+            result = result.Replace("[B]", GetIconHtml(DieType.Boost));
+            result = result.Replace("[Blue]", GetIconHtml(DieType.Boost));
+            result = result.Replace("[A]", GetIconHtml(DieType.Ability));
+            result = result.Replace("[Green]", GetIconHtml(DieType.Ability));
+            result = result.Replace("[P]", GetIconHtml(DieType.Proficiency));
+            result = result.Replace("[Yellow]", GetIconHtml(DieType.Proficiency));
+            result = result.Replace("[D]", GetIconHtml(DieType.Difficulty));
+            result = result.Replace("[Purple]", GetIconHtml(DieType.Difficulty));
+            result = result.Replace("[C]", GetIconHtml(DieType.Challenge));
+            result = result.Replace("[Red]", GetIconHtml(DieType.Challenge));
 
-            result = result.Replace(":Ad:", GetIconHtml(DieIconType.Despair));
-            result = result.Replace(":De:", GetIconHtml(DieIconType.Despair));
-            result = result.Replace(":Fa:", GetIconHtml(DieIconType.Despair));
-            result = result.Replace(":Su:", GetIconHtml(DieIconType.Despair));
-            result = result.Replace(":Th:", GetIconHtml(DieIconType.Despair));
-            result = result.Replace(":Tr:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":A:", GetIconHtml(DieIconType.Advantage));
+            result = result.Replace(":Advantage:", GetIconHtml(DieIconType.Advantage));
+            result = result.Replace(":D:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Despair:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":F:", GetIconHtml(DieIconType.Failure));
+            result = result.Replace(":Failure:", GetIconHtml(DieIconType.Failure));
+            result = result.Replace(":S:", GetIconHtml(DieIconType.Success));
+            result = result.Replace(":Success:", GetIconHtml(DieIconType.Success));
+            result = result.Replace(":Th:", GetIconHtml(DieIconType.Threat));
+            result = result.Replace(":Threat:", GetIconHtml(DieIconType.Threat));
+            result = result.Replace(":Tr:", GetIconHtml(DieIconType.Trimumph));
+            result = result.Replace(":Triumph:", GetIconHtml(DieIconType.Trimumph));
 
             return (MarkupString) result;
         }
