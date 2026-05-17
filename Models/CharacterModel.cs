@@ -1,4 +1,4 @@
-﻿using CharacterSheet.Components;
+﻿using static CharacterSheet.RenderExtensions;
 
 namespace CharacterSheet.Models
 {
@@ -146,13 +146,13 @@ namespace CharacterSheet.Models
             Knowledge
         }
 
-        public List<Die.DieType> GenerateDicePool()
+        public List<DieType> GenerateDicePool()
         {
             if(Ranks < 0)
             {
                 return [];
             }
-            var dicePool = new List<Die.DieType>();
+            var dicePool = new List<DieType>();
             int yellows;
             int greens;
             if(Ranks <= Base.Value)
@@ -168,20 +168,20 @@ namespace CharacterSheet.Models
 
             for(var i = 0; i < yellows; ++i)
             {
-                dicePool.Add(Die.DieType.Proficiency);
+                dicePool.Add(DieType.Proficiency);
             }
             for(var i = 0; i < greens; ++i)
             {
-                dicePool.Add(Die.DieType.Ability);
+                dicePool.Add(DieType.Ability);
             }
 
             for(var i = 0; i < BonusDice; ++i)
             {
-                dicePool.Add(Die.DieType.Boost);
+                dicePool.Add(DieType.Boost);
             }
             for(var i = 0; i < SetbackCancels; ++i)
             {
-                dicePool.Add(Die.DieType.Setback);
+                dicePool.Add(DieType.Setback);
             }
 
             return dicePool;

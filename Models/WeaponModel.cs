@@ -1,4 +1,4 @@
-﻿using CharacterSheet.Components;
+﻿using static CharacterSheet.RenderExtensions;
 
 namespace CharacterSheet.Models
 {
@@ -10,9 +10,9 @@ namespace CharacterSheet.Models
         public int? Damage { get; set; }
         public int? Critical { get; set; }
         public List<string> Qualities { get; set; } = [];
-        public List<Die.DieType> AdditionalDice { get; set; } = [];
+        public List<DieType> AdditionalDice { get; set; } = [];
 
-        public List<Die.DieType> DicePool => Skill != null
+        public List<DieType> DicePool => Skill != null
             ? Skill.GenerateDicePool().Concat(AdditionalDice).ToList()
             : AdditionalDice;
 

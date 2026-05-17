@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text.Json
 @using System.Threading.Tasks
+@using static CharacterSheet.RenderExtensions
 
 <MudGrid>
     <MudItem xs="8">
@@ -180,8 +181,8 @@
                     <MudStack>
                         <MudElement>
                             <MudText>Additional Dice</MudText>
-                            <MudButton Variant="Variant.Outlined" OnClick="() => context.AdditionalDice.Add(Die.DieType.Boost)"><Die Type="Die.DieType.Boost" /></MudButton>
-                            <MudButton Variant="Variant.Outlined" Onclick="() => context.AdditionalDice.Add(Die.DieType.Setback)"><Die Type="Die.DieType.Setback" /></MudButton>
+                            <MudButton Variant="Variant.Outlined" OnClick="() => context.AdditionalDice.Add(DieType.Boost)"><Die Type="DieType.Boost" /></MudButton>
+                            <MudButton Variant="Variant.Outlined" Onclick="() => context.AdditionalDice.Add(DieType.Setback)"><Die Type="DieType.Setback" /></MudButton>
                             <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="() => context.AdditionalDice = []">Clear</MudButton>
                         </MudElement>
                         <MudElement>

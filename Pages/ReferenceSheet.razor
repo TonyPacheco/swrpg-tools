@@ -2,6 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text.Json
 @using System.Threading.Tasks
+@using static CharacterSheet.RenderExtensions
 
 <MudGrid>
     <MudItem xs="8">
@@ -164,7 +165,7 @@
                 <MudTd>
                     @for(var i = 0; i < context.Critical; ++i)
                     {
-                        <DieIcon Type="DieIcon.IconType.Advantage" />
+                        <DieIcon Type="DieIconType.Advantage" />
                     }
                 </MudTd>
             </RowTemplate>
@@ -222,7 +223,7 @@
                             <MudText>@talent.Name</MudText>
                         </MudCardHeader>
                         <MudCardContent>
-                            <MudText>@talent.Description</MudText>
+                            @talent.Description.RenderWithIcons()
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
