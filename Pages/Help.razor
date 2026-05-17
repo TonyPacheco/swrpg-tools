@@ -1,0 +1,84 @@
+﻿@page "/help"
+@using static CharacterSheet.RenderExtensions
+@using System.Text.Json
+@using System.Text
+
+<h2>Help</h2>
+
+<p>
+    Markup: Some fields (such as talent descripions) support icon markup.
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Icon</th>
+            <th>Markup</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@GetIconHtml(ForceIconType.Dark).RenderWithIcons()</td>
+            <td><code>(Dk)</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(ForceIconType.Light).RenderWithIcons()</td>
+            <td><code>(Lt)</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(ForceIconType.Split).RenderWithIcons()</td>
+            <td><code>(Sp)</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Setback).RenderWithIcons()</td>
+            <td><code>[Sb]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Boost).RenderWithIcons()</td>
+            <td><code>[Bo]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Ability).RenderWithIcons()</td>
+            <td><code>[Ab]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Proficiency).RenderWithIcons()</td>
+            <td><code>[Pr]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Difficulty).RenderWithIcons()</td>
+            <td><code>[Di]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieType.Challenge).RenderWithIcons()</td>
+            <td><code>[Ch]</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Advantage).RenderWithIcons()</td>
+            <td><code>:Ad:</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Despair).RenderWithIcons()</td>
+            <td><code>:De:</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Failure).RenderWithIcons()</td>
+            <td><code>:Fa:</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Success).RenderWithIcons()</td>
+            <td><code>:Su:</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Threat).RenderWithIcons()</td>
+            <td><code>:Th:</code></td>
+        </tr>
+        <tr>
+            <td>@GetIconHtml(DieIconType.Trimumph).RenderWithIcons()</td>
+            <td><code>:Tr:</code></td>
+        </tr>
+    </tbody>
+</table>
+
+@code {
+
+}

@@ -19,12 +19,12 @@ namespace CharacterSheet
             result = result.Replace("[Df]", GetIconHtml(DieType.Difficulty));
             result = result.Replace("[Ch]", GetIconHtml(DieType.Challenge));
 
-            result = result.Replace("<Ad>", GetIconHtml(DieIconType.Despair));
-            result = result.Replace("<De>", GetIconHtml(DieIconType.Despair));
-            result = result.Replace("<Fa>", GetIconHtml(DieIconType.Despair));
-            result = result.Replace("<Su", GetIconHtml(DieIconType.Despair));
-            result = result.Replace("<Th>", GetIconHtml(DieIconType.Despair));
-            result = result.Replace("<Tr>", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Ad:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":De:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Fa:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Su:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Th:", GetIconHtml(DieIconType.Despair));
+            result = result.Replace(":Tr:", GetIconHtml(DieIconType.Despair));
 
             return (MarkupString) result;
         }
