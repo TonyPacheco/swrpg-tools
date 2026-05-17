@@ -27,6 +27,8 @@ namespace CharacterSheet
             result = result.Replace("[Purple]", GetIconHtml(DieType.Difficulty));
             result = result.Replace("[C]", GetIconHtml(DieType.Challenge));
             result = result.Replace("[Red]", GetIconHtml(DieType.Challenge));
+            result = result.Replace("[F]", GetIconHtml(DieType.Force));
+            result = result.Replace("[White]", GetIconHtml(DieType.Force));
 
             result = result.Replace(":A:", GetIconHtml(DieIconType.Advantage));
             result = result.Replace(":Advantage:", GetIconHtml(DieIconType.Advantage));
@@ -58,7 +60,7 @@ namespace CharacterSheet
             (DieType.Difficulty, false) => "ffi-d8 ffi-swrpg-difficulty",
             (DieType.Challenge, false) => "ffi-d12 ffi-swrpg-challenge",
             (DieType.Setback, false) => "ffi-d6 ffi-swrpg-setback",
-            (DieType.Force, false) => "ffi-d12 ffi-swrpg-force",
+            (DieType.Force, false) => "ffi-d12 colorWhite",
 
             (DieType.Ability, _) => "ffi-d8-outline ffi-swrpg-ability",
             (DieType.Proficiency, _) => "ffi-d12-outline ffi-swrpg-proficiency",
@@ -72,9 +74,9 @@ namespace CharacterSheet
 
         public static string GetForceIconClass(ForceIconType type) => type switch
         {
-            ForceIconType.Dark => "ffi-swrpg-force-outline",
-            ForceIconType.Light => "ffi-swrpg-force",
-            ForceIconType.Split => "ffi-swrpg-force-split",
+            ForceIconType.Dark => "ffi-swrpg-force-outline colorWhite",
+            ForceIconType.Light => "ffi-swrpg-force colorWhite",
+            ForceIconType.Split => "ffi-swrpg-force-split colorWhite",
             _ => ""
         };
 

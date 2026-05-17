@@ -67,6 +67,7 @@ namespace CharacterSheet.Models
         public Characteristic Cunning { get; set; } = new Characteristic(nameof(Cunning));
         public Characteristic Willpower { get; set; } = new Characteristic(nameof(Willpower));
         public Characteristic Presence { get; set; } = new Characteristic(nameof(Presence));
+        public Characteristic ForceRating { get; set; } = new Characteristic(nameof(ForceRating));
 
         public int Soak { get; set; }
         public int WoundThreshold { get; set; }
@@ -192,5 +193,8 @@ namespace CharacterSheet.Models
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool IsForcePower { get; set; }
+
+        public string ReferenceHeader => $"{(IsForcePower ? "(Force)" : "")} {Name}";
     }
 }

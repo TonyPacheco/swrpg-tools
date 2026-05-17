@@ -38,14 +38,11 @@
     <MudItem xs="12" md="6">
         Species: <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Species" />
     </MudItem>
-    <MudItem xs="12" md="12">
+    <MudItem xs="8" sm="10">
         Specialization(s): <MudTextField Variant="Variant.Outlined" @bind-Value="@Model.Specialization" />
     </MudItem>
-    <MudItem xs="6">
-        XP: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Xp" />
-    </MudItem>
-    <MudItem xs="6">
-        Credits: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Credits" />
+    <MudItem xs="4" sm="2">
+        Force Rating: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.ForceRating.Value" Min="0" Max="6" />
     </MudItem>
 
     @* CHARACTERISTICS SECTION *@
@@ -130,6 +127,13 @@
         </MudTable>
     </MudItem>
 
+    <MudItem xs="6">
+        XP: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Xp" />
+    </MudItem>
+    <MudItem xs="6">
+        Credits: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Credits" />
+    </MudItem>
+
     @* WEAPONS SECTION *@
 
     <MudItem xs="12" Class="">
@@ -145,7 +149,7 @@
                 <MudTh>Skill</MudTh>
                 <MudTh>Dmg</MudTh>
                 <MudTh>Crit</MudTh>
-                <MudTh>Additonal Dice</MudTh>
+                <MudTh>Additional Dice</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -241,18 +245,21 @@
 <MudItem xs="12">
     <MudTable Items="@Model.Talents" Breakpoint="Breakpoint.None">
         <ToolBarContent>
-            <MudText>Talents</MudText>
+            <MudText>Talents & Powers</MudText>
             <MudSpacer />
             <MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" onclick="@AddTalent" />
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Talent</MudTh>
+            <MudTh>Name</MudTh>
             <MudTh>Description</MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd>
-                <MudTextField Placeholder="Talent" Variant="Variant.Outlined" @bind-Value="context.Name" />
+                <MudStack>
+                    <MudCheckBox Label="Force Power" @bind-Value="context.IsForcePower"/>
+                    <MudTextField Placeholder="Name" Variant="Variant.Outlined" @bind-Value="context.Name" />
+                </MudStack>
             </MudTd>
             <MudTd>
                 <MudTextField Placeholder="Description" Variant="Variant.Outlined" Lines="5" AutoGrow="true" @bind-Value="context.Description" />

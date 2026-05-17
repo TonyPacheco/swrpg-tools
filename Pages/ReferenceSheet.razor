@@ -213,14 +213,14 @@
 
     @* TALENTS SECTION *@
     <MudItem xs="12">
-        <MudText Typo="Typo.subtitle1" Class="subheader">Talents</MudText>
+        <MudText Typo="Typo.subtitle1" Class="subheader">Talents & Powers</MudText>
         <MudGrid>
             @foreach(var talent in Model.Talents)
             {
                 <MudItem xs="12" md="6" lg="4">
                     <MudCard>
                         <MudCardHeader>
-                            <MudText>@talent.Name</MudText>
+                            <MudText>@talent.ReferenceHeader.RenderWithIcons()</MudText>
                         </MudCardHeader>
                         <MudCardContent>
                             @talent.Description.RenderWithIcons()
