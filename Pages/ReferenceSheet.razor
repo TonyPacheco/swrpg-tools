@@ -9,11 +9,19 @@
         <MudStack>
             <MudText Typo="Typo.h5">@Model.CharacterName</MudText>
             <MudText>@Model.Career: @Model.Specialization</MudText>
+            <MudText>Force Rating: @Model.ForceRating.Value</MudText>
         </MudStack>
     </MudItem>
-    <MudItem xs="4">
-        <MudButton Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
-        <MudButton Variant="Variant.Filled" @onclick="NavToSheet">Return</MudButton>
+    <MudItem xs="4" Class="d-flex justify-end flex-grow-1">
+        <MudStack>
+            <MudContainer>
+                <MudButton Class="flex-none" Variant="Variant.Filled" @onclick="SaveCharacter">Save</MudButton>
+                <MudButton Class="flex-none" Variant="Variant.Filled" @onclick="NavToSheet">Return</MudButton>
+            </MudContainer>
+            <MudSpacer></MudSpacer>
+            <MudSpacer></MudSpacer>
+        </MudStack>
+        
     </MudItem>
     <MudItem xs="6">
         XP: <MudNumericField Variant="Variant.Outlined" @bind-Value="@Model.Current.Xp" />
